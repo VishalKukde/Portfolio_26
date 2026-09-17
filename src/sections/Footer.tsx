@@ -24,7 +24,7 @@ export default function Footer() {
               VK<span className="text-coral">.</span>
             </a>
             <p className="mt-3 max-w-xs text-sm leading-6 text-paper/55">
-              Full stack developer building useful complexity into calm digital
+              Senior full stack developer building useful complexity into calm digital
               products.
             </p>
             <div className="mt-5 flex gap-2">

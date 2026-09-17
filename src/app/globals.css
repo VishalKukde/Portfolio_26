@@ -146,17 +146,44 @@ a {
   mask-image: linear-gradient(to bottom, black, transparent 90%);
 }
 
-.loading-track {
-  height: 4px;
-  overflow: hidden;
-  background: rgba(241, 238, 230, 0.2);
+.loading-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.loading-progress {
-  height: 100%;
+.loading-line-track {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(241, 238, 230, 0.14);
+}
+
+.loading-line-fill {
+  position: absolute;
+  inset: 0;
   background: var(--lime);
-  box-shadow: 0 0 18px rgba(200, 241, 105, 0.7);
-  transition: width 80ms linear;
+  box-shadow: 0 0 14px rgba(200, 241, 105, 0.65);
+  will-change: transform;
+}
+
+/* Each half is anchored at the percentage, so the line opens outward from the center. */
+.loading-line-fill-left {
+  transform-origin: right center;
+}
+
+.loading-line-fill-right {
+  transform-origin: left center;
+}
+
+.loading-percent {
+  min-width: 3.2ch;
+  color: var(--lime);
+  font-family: "DM Mono", monospace;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  text-align: center;
 }
 
 .site-container {
@@ -166,6 +193,46 @@ a {
 
 .section-pad {
   padding-block: clamp(5.5rem, 10vw, 10rem);
+}
+
+/* Stacked pages: each section stays put while the next one slides over it. */
+.stack-main > section {
+  position: relative;
+  z-index: 1;
+}
+
+.stack-main > section:not([data-nav-theme]):not(.hero-v2) {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(circle at 92% 0%, rgba(200, 241, 105, 0.22), transparent 34rem),
+    linear-gradient(to bottom, rgba(241, 238, 230, 0) 0%, var(--paper) 86%),
+    linear-gradient(rgba(20, 32, 29, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 32, 29, 0.045) 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+}
+
+.stack-main > section#skills {
+  background-color: #ebe9e0;
+}
+
+.stack-main > section + section {
+  box-shadow: 0 -18px 50px rgba(9, 20, 17, 0.14);
+}
+
+.stack-main.is-stacking > section {
+  position: sticky;
+  top: min(0px, calc(100vh - var(--stack-h, 100vh)));
+  top: min(0px, calc(100svh - var(--stack-h, 100svh)));
+}
+
+.stack-main > section:not(.hero-v2)::after {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: #050b09;
+  content: "";
+  opacity: calc(var(--stack-dim, 0) * 0.45);
+  pointer-events: none;
 }
 
 .display-font {

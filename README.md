@@ -1,4 +1,4 @@
-# Vishal Kukde | Full Stack Developer Portfolio
+# Vishal Kukde | Senior Full Stack Developer Portfolio
 
 <p align="center">
   <a href="https://nextjs.org/">
@@ -46,7 +46,7 @@
 
 ## About Vishal
 
-I am Vishal Kukde, a full stack developer focused on turning complex product ideas into fast, understandable, and dependable software. My core toolkit is React, Next.js, Node.js, TypeScript, and modern UI engineering.
+I am Vishal Kukde, a senior full stack developer focused on turning complex product ideas into fast, understandable, and dependable software. My core toolkit is React, Next.js, Node.js, TypeScript, and modern UI engineering.
 
 I enjoy owning the whole product surface: shaping interfaces, designing API boundaries, modelling data, improving performance, and leaving teams with a foundation they can extend confidently.
 

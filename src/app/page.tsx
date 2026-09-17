@@ -8,6 +8,7 @@ import Hero from '@/sections/Hero';
 import Navbar from '@/sections/Navbar';
 import Projects from '@/sections/Projects';
 import Skills from '@/sections/Skills';
+import SectionStack from '@/components/SectionStack';
 import HeroV2 from '@/sections/HeroV2';
 import { HERO_VERSION } from '@/constants';
 
@@ -18,14 +19,14 @@ export default function Home() {
       <Background />
       <div className="content-layer">
         <Navbar />
-        <main>
+        <SectionStack>
           {HERO_VERSION === 'v2' ? <HeroV2 /> : <Hero />}
           <About />
           <Skills />
           <Projects />
           <Experience />
           <Contact />
-        </main>
+        </SectionStack>
         <Footer />
       </div>
     </>

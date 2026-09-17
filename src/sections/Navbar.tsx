@@ -19,16 +19,17 @@ export default function Navbar() {
       setScrolled(window.scrollY > 24);
 
       // Match the section currently behind the bar so it stays legible on dark and coral backgrounds.
+      // Sections stack on top of each other, so hit-test the painted one rather than comparing rects.
       const bar = barRef.current;
       if (!bar) return;
       const { top, height } = bar.getBoundingClientRect();
-      const probe = top + height / 2;
-      const section = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-nav-theme]"),
-      ).find((element) => {
-        const rect = element.getBoundingClientRect();
-        return rect.top <= probe && rect.bottom >= probe;
-      });
+      const section = document
+        .elementsFromPoint(window.innerWidth / 2, top + height / 2)
+        .filter((element) => !bar.parentElement?.contains(element))
+        .map((element) =>
+          element.closest<HTMLElement>(".stack-main > section, footer"),
+        )
+        .find(Boolean);
       setTheme((section?.dataset.navTheme as NavTheme | undefined) ?? "light");
     };
     handleScroll();

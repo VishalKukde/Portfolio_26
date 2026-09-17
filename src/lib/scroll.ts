@@ -1,5 +1,14 @@
 import type { MouseEvent } from 'react';
 
+// Stuck sections report their pinned position, so measure with stacking briefly disabled.
+function getNaturalTop(target: HTMLElement) {
+  const stack = target.closest('.stack-main.is-stacking');
+  stack?.classList.remove('is-stacking');
+  const top = target.getBoundingClientRect().top + window.scrollY;
+  stack?.classList.add('is-stacking');
+  return top;
+}
+
 export function scrollToSection(event: MouseEvent<HTMLAnchorElement>, href: string) {
   if (!href.startsWith('#')) {
     return;
@@ -12,9 +21,9 @@ export function scrollToSection(event: MouseEvent<HTMLAnchorElement>, href: stri
   }
 
   event.preventDefault();
-  target.scrollIntoView({
+  window.scrollTo({
+    top: getNaturalTop(target),
     behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    block: 'start',
   });
   window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
 }

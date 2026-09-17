@@ -43,7 +43,7 @@ export default function HeroV2() {
 
           <motion.div variants={reveal} transition={{ duration: 0.65 }} className="mt-8 flex items-center gap-3">
             <span className="h-px w-10 bg-coral" />
-            <span className="mono-font text-[0.7rem] uppercase tracking-[0.13em] text-moss">Full Stack Developer / Vishal Kukde</span>
+            <span className="mono-font text-[0.7rem] uppercase tracking-[0.13em] text-moss">Senior Full Stack Developer / Vishal Kukde</span>
           </motion.div>
 
           <motion.p variants={reveal} transition={{ duration: 0.65 }} className="body-copy mt-6 max-w-lg text-[1rem]">

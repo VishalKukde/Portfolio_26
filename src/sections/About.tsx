@@ -48,7 +48,7 @@ export default function About() {
             <div className="mt-8 grid gap-7 md:grid-cols-[1fr_0.78fr]">
               <div className="body-copy space-y-5 text-[1rem]">
                 <p>
-                  I&apos;m Vishal, a full stack developer who likes the work behind the work: the decisions that make a product calm, quick, and ready for its next chapter.
+                  I&apos;m Vishal, a senior full stack developer who likes the work behind the work: the decisions that make a product calm, quick, and ready for its next chapter.
                 </p>
                 <p>
                   My home base is React, Next.js, Node.js, and TypeScript. I&apos;ve used them to build booking engines, commerce platforms, logistics tools, and AI-assisted dashboards.

@@ -4,19 +4,28 @@ import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Check, Code2 } from "lucide-react";
 import { CONTACT_EMAIL } from "@/constants";
 import { scrollToSection } from "@/lib/scroll";
+import { LOADING_DURATION } from "@/components/LoadingScreen";
 
-const roleWords = ["Full", "Stack", "Developer"];
-
-const wordVariants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0 },
+// Start once the splash screen has faded, otherwise the reveal plays unseen behind it.
+// The slash fades in, pauses, sweeps right, and tilts from "\" to "/" as it settles.
+const slashTilt = 22;
+const slashFadeIn = LOADING_DURATION / 1000 + 0.3;
+const roleReveal = {
+  duration: 1.5,
+  delay: slashFadeIn + 0.45,
+  ease: [0.65, 0, 0.35, 1] as const,
+};
+const slashRotate = {
+  duration: 1.1,
+  delay: roleReveal.delay + 0.7,
+  ease: [0.45, 0, 0.2, 1] as const,
 };
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-32 md:pt-40"
+      className="relative flex min-h-screen items-center overflow-hidden pb-24 pt-32 md:pb-32 md:pt-40"
     >
       <div className="hero-orbit" aria-hidden="true" />
       <div className="hero-mark" aria-hidden="true">
@@ -49,30 +58,38 @@ export default function Hero() {
             <span className="outline-text">digital</span> products.
           </motion.h1>
 
-          <motion.div
-            initial="hidden"
-            animate="show"
-            transition={{ delayChildren: 0.35, staggerChildren: 0.09 }}
-            className="display-font mt-8 flex flex-wrap gap-x-3 text-2xl font-medium tracking-[-0.07em] text-ink sm:text-3xl"
-            aria-label="Full Stack Developer"
-          >
-            {roleWords.map((word) => (
+          {/* The slash sweeps left to right and the role is uncovered right behind it. */}
+          <div className="display-font mt-8 pr-8 text-xl font-medium tracking-[-0.07em] text-ink sm:text-3xl">
+            <span className="relative inline-block whitespace-nowrap">
               <motion.span
-                key={word}
-                variants={wordVariants}
-                transition={{ duration: 0.55 }}
+                className="inline-block"
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={roleReveal}
               >
-                {word}
+                Senior Full Stack Developer
               </motion.span>
-            ))}
-            <motion.span
-              variants={wordVariants}
-              transition={{ duration: 0.55 }}
-              className="text-coral"
-            >
-              /
-            </motion.span>
-          </motion.div>
+              <motion.span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                initial={{ x: "0%" }}
+                animate={{ x: "100%" }}
+                transition={roleReveal}
+              >
+                {/* Drawn as a bar so it can tilt precisely from "\" to "/". */}
+                <motion.span
+                  className="absolute left-3 top-1/2 h-[0.95em] w-[0.1em] rounded-[1px] bg-coral"
+                  style={{ y: "-50%" }}
+                  initial={{ opacity: 0, rotate: -slashTilt }}
+                  animate={{ opacity: 1, rotate: slashTilt }}
+                  transition={{
+                    opacity: { duration: 0.35, delay: slashFadeIn },
+                    rotate: slashRotate,
+                  }}
+                />
+              </motion.span>
+            </span>
+          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -151,7 +168,7 @@ export default function Hero() {
                 <span className="pl-4">
                   role:{" "}
                   <b className="font-normal text-lime">
-                    &quot;Full Stack Developer&quot;
+                    &quot;Senior Full Stack Developer&quot;
                   </b>
                   ,
                 </span>

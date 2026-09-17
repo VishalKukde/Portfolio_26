@@ -61,7 +61,7 @@ const ICONS: Record<string, LucideIcon> = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="section-pad bg-paper-deep/50">
+    <section id="skills" className="section-pad">
       <div className="site-container">
         <div className="flex flex-col justify-between gap-8 border-b border-ink/20 pb-10 lg:flex-row lg:items-end">
           <div>
