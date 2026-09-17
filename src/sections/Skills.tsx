@@ -30,6 +30,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { SKILL_CATEGORIES } from "@/data/skills";
+import { trackSpotlight } from "@/lib/spotlight";
+
+const luxEase = [0.16, 1, 0.3, 1] as const;
 
 const ICONS: Record<string, LucideIcon> = {
   Atom,
@@ -62,16 +65,31 @@ const ICONS: Record<string, LucideIcon> = {
 export default function Skills() {
   return (
     <section id="skills" className="section-pad">
-      <div className="site-container">
-        <div className="flex flex-col justify-between gap-8 border-b border-ink/20 pb-10 lg:flex-row lg:items-end">
+      <div className="lux-ambient" aria-hidden="true">
+        <span className="lux-aura skills-aura-lime" />
+        <span className="lux-aura skills-aura-coral" />
+        <span className="lux-grain" />
+      </div>
+
+      <div className="site-container relative">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1, ease: luxEase }}
+          className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end"
+        >
           <div>
-            <span className="kicker">The toolkit</span>
-            <h2 className="display-title text-5xl sm:text-6xl lg:text-7xl">
-              Built for the whole picture.
+            <span className="lux-pill">
+              <span className="lux-pill-dot" aria-hidden="true" />
+              The toolkit
+            </span>
+            <h2 className="display-title skills-title text-5xl sm:text-6xl lg:text-7xl">
+              Built for the whole <span className="lux-accent">picture.</span>
             </h2>
           </div>
-          <div className="max-w-sm border-l-2 border-coral pl-5">
-            <span className="mono-font text-[0.62rem] uppercase tracking-[0.12em] text-moss">
+          <div className="lux-card skills-note" onPointerMove={trackSpotlight}>
+            <span className="mono-font text-[0.62rem] uppercase tracking-[0.12em] text-coral">
               01 / current stack
             </span>
             <p className="mt-3 text-sm leading-7 text-moss">
@@ -79,86 +97,93 @@ export default function Skills() {
               workflow for turning ideas into dependable software.
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {SKILL_CATEGORIES.map((category, index) => (
-            <motion.article
-              key={category.index}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: index * 0.08 }}
-              data-category-index={category.index}
-              className={`skill-category-card ${category.title === "AI Innovation" ? "md:col-span-2" : ""}`}
-            >
-              <div className="relative z-10 flex items-start justify-between gap-5">
-                <div className="flex items-start gap-4">
-                  <span className="skill-category-index">{category.index}</span>
-                  <div>
-                    <h3 className="display-font text-3xl font-medium leading-none tracking-[-0.07em]">
-                      {category.title}
-                    </h3>
-                    <p className="mt-3 max-w-xl text-sm leading-6 text-moss">
-                      {category.description}
-                    </p>
-                  </div>
-                </div>
-                <span className="mono-font hidden border border-ink/20 px-2.5 py-1.5 text-[0.55rem] uppercase tracking-[0.08em] text-moss sm:block">
-                  {category.badge}
-                </span>
-              </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          {SKILL_CATEGORIES.map((category, index) => {
+            const featured = category.title === "AI Innovation";
 
-              <div
-                className={`relative z-10 mt-8 grid gap-x-8 gap-y-0 ${category.title === "AI Innovation" ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}
+            return (
+              <motion.article
+                key={category.index}
+                initial={{ opacity: 0, y: 36, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 1, delay: (index % 2) * 0.1, ease: luxEase }}
+                onPointerMove={trackSpotlight}
+                data-category-index={category.index}
+                className={`lux-card skill-category-card ${featured ? "md:col-span-2" : ""}`}
               >
-                {category.skills.map((skill) => {
-                  const Icon = ICONS[skill.icon] ?? Code2;
-
-                  return (
-                    <div
-                      key={skill.name}
-                      className="skill-detail-card group/skill"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex min-w-0 items-start gap-2.5">
-                          <Icon
-                            size={15}
-                            strokeWidth={1.6}
-                            className="mt-0.5 flex-none text-coral transition-transform group-hover/skill:scale-110"
-                            aria-hidden="true"
-                          />
-                          <div className="min-w-0">
-                            <p className="display-font truncate text-sm font-medium tracking-[-0.04em]">
-                              {skill.name}
-                            </p>
-                            <p className="mt-1 text-[0.62rem] leading-4 text-moss">
-                              {skill.description}
-                            </p>
-                          </div>
-                        </div>
-                        <span className="mono-font flex-none text-[0.58rem] text-moss">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div
-                        className="skill-level-track"
-                        aria-label={`${skill.name} proficiency ${skill.level}%`}
-                      >
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.8, ease: "easeOut" }}
-                          className="skill-level-fill"
-                        />
-                      </div>
+                <div className="relative z-10 flex items-start justify-between gap-5">
+                  <div className="flex items-start gap-4">
+                    <span className="skill-category-index">{category.index}</span>
+                    <div>
+                      <h3 className="display-font text-3xl font-medium leading-none tracking-[-0.06em]">
+                        {category.title}
+                      </h3>
+                      <p className="mt-3 max-w-xl text-sm leading-6 text-moss">
+                        {category.description}
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
-            </motion.article>
-          ))}
+                  </div>
+                  <span className="skill-badge hidden sm:inline-flex">
+                    {category.badge}
+                  </span>
+                </div>
+
+                <div
+                  className={`relative z-10 mt-8 grid gap-x-8 ${featured ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2"}`}
+                >
+                  {category.skills.map((skill, skillIndex) => {
+                    const Icon = ICONS[skill.icon] ?? Code2;
+
+                    return (
+                      <div key={skill.name} className="skill-detail-card group/skill">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex min-w-0 items-start gap-3">
+                            <span className="skill-icon" aria-hidden="true">
+                              <Icon size={14} strokeWidth={1.7} />
+                            </span>
+                            <div className="min-w-0">
+                              <p className="display-font truncate text-sm font-medium tracking-[-0.03em]">
+                                {skill.name}
+                              </p>
+                              <p className="mt-1 text-[0.62rem] leading-4 text-moss">
+                                {skill.description}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="skill-level">{skill.level}%</span>
+                        </div>
+                        {/* The track watches the viewport: the fill starts at zero width, which
+                            intersection checks can miss, so it only follows the track's state. */}
+                        <motion.div
+                          className="skill-level-track"
+                          aria-label={`${skill.name} proficiency ${skill.level}%`}
+                          initial="hidden"
+                          whileInView="show"
+                          viewport={{ once: true, amount: "some" }}
+                        >
+                          <motion.div
+                            variants={{
+                              hidden: { scaleX: 0 },
+                              show: { scaleX: skill.level / 100 },
+                            }}
+                            transition={{
+                              duration: 1.2,
+                              delay: 0.15 + skillIndex * 0.04,
+                              ease: luxEase,
+                            }}
+                            className="skill-level-fill"
+                          />
+                        </motion.div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

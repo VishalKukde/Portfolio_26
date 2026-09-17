@@ -42,6 +42,9 @@ export default function SectionStack({ children }: { children: ReactNode }) {
         refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 150);
       }
     };
+    // Adds the scroll "hold" after each section. Unlike is-stacking it stays on during
+    // refreshes, because it changes layout and triggers must measure it.
+    main.classList.add("stack-ready");
     measure();
     const observer = new ResizeObserver((entries) => measure(entries));
     sections.forEach((section) => observer.observe(section));
@@ -82,6 +85,7 @@ export default function SectionStack({ children }: { children: ReactNode }) {
       ScrollTrigger.removeEventListener("refresh", restick);
       context.revert();
       unstick();
+      main.classList.remove("stack-ready");
       sections.forEach((section) => section.style.removeProperty("--stack-h"));
     };
   }, []);

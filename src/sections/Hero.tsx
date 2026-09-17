@@ -1,15 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Check, Code2 } from "lucide-react";
-import { CONTACT_EMAIL } from "@/constants";
+import type { PointerEvent, ReactNode } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import { ArrowUpRight, Code2 } from "lucide-react";
 import { scrollToSection } from "@/lib/scroll";
 import { LOADING_DURATION } from "@/components/LoadingScreen";
 
-// Start once the splash screen has faded, otherwise the reveal plays unseen behind it.
+// Everything waits for the splash screen, otherwise the entrance plays unseen behind it.
+const intro = LOADING_DURATION / 1000 + 0.1;
+const luxEase = [0.16, 1, 0.3, 1] as const;
+
 // The slash fades in, pauses, sweeps right, and tilts from "\" to "/" as it settles.
 const slashTilt = 22;
-const slashFadeIn = LOADING_DURATION / 1000 + 0.3;
+const slashFadeIn = intro + 0.55;
 const roleReveal = {
   duration: 1.5,
   delay: slashFadeIn + 0.45,
@@ -21,42 +29,142 @@ const slashRotate = {
   ease: [0.45, 0, 0.2, 1] as const,
 };
 
+const fadeUp = (delay: number, distance = 18) => ({
+  initial: { opacity: 0, y: distance },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.9, delay, ease: luxEase },
+});
+
+const codeLines: { indent?: string; content: ReactNode }[] = [
+  {
+    content: (
+      <>
+        <i className="text-coral not-italic">const</i> developer = {"{"}
+      </>
+    ),
+  },
+  {
+    indent: "pl-4",
+    content: (
+      <>
+        name: <b className="font-normal text-lime">&quot;Vishal Kukde&quot;</b>,
+      </>
+    ),
+  },
+  {
+    indent: "pl-4",
+    content: (
+      <>
+        role:{" "}
+        <b className="font-normal text-lime">
+          &quot;Senior Full Stack Developer&quot;
+        </b>
+        ,
+      </>
+    ),
+  },
+  {
+    indent: "pl-4",
+    content: (
+      <>
+        focus:{" "}
+        <b className="font-normal text-coral">&quot;useful complexity&quot;</b>,
+      </>
+    ),
+  },
+  { indent: "pl-4", content: "stack: [" },
+  {
+    indent: "pl-8 text-teal",
+    content: <>&quot;React&quot;, &quot;Next.js&quot;, &quot;Node.js&quot;,</>,
+  },
+  {
+    indent: "pl-8 text-teal",
+    content: <>&quot;Express.js&quot;, &quot;MongoDB&quot;</>,
+  },
+  { indent: "pl-4", content: "]," },
+  {
+    indent: "pl-4",
+    content: (
+      <>
+        status:{" "}
+        <b className="font-normal text-lime">&quot;open to good work&quot;</b>
+      </>
+    ),
+  },
+  { content: <>{"}"};</> },
+];
+
+const headingLines: ReactNode[] = [
+  "I build",
+  <>
+    <span className="hero-accent">digital</span> products.
+  </>,
+];
+
 export default function Hero() {
+  const reduceMotion = useReducedMotion();
+  const tiltX = useSpring(useMotionValue(0), { stiffness: 140, damping: 20 });
+  const tiltY = useSpring(useMotionValue(0), { stiffness: 140, damping: 20 });
+
+  // A gentle 3D tilt and a spotlight that follow the pointer across the card.
+  const handleCardMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (reduceMotion || event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    tiltX.set((0.5 - y) * 7);
+    tiltY.set((x - 0.5) * 9);
+    event.currentTarget.style.setProperty("--mx", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--my", `${y * 100}%`);
+  };
+
+  const resetCard = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
+
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden pb-24 pt-32 md:pb-32 md:pt-40"
+      className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-24 md:pb-20 md:pt-28"
     >
-      <div className="hero-orbit" aria-hidden="true" />
+      <div className="hero-ambient" aria-hidden="true">
+        <span className="hero-aura hero-aura-lime" />
+        <span className="hero-aura hero-aura-coral" />
+        <span className="hero-aura hero-aura-teal" />
+        <span className="hero-orbit" />
+        <span className="hero-orbit hero-orbit-inner" />
+        <span className="hero-grain" />
+      </div>
       <div className="hero-mark" aria-hidden="true">
         VK
       </div>
 
       <div className="site-container relative grid items-center gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
         <div className="relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="kicker"
-          >
+          <motion.div {...fadeUp(intro, 12)} className="hero-pill">
+            <span className="hero-pill-dot" aria-hidden="true" />
             Available for meaningful problems
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="display-title max-w-4xl text-[clamp(3.6rem,10vw,9.4rem)]"
-          >
-            I build
-            <br />
-            <span className="outline-text">digital</span> products.
-          </motion.h1>
+          <h1 className="display-title hero-title max-w-4xl text-[clamp(3.6rem,10vw,9.4rem)]">
+            {headingLines.map((line, index) => (
+              <span key={index} className="hero-title-mask">
+                <motion.span
+                  className="block"
+                  initial={{ y: "110%" }}
+                  animate={{ y: "0%" }}
+                  transition={{
+                    duration: 1.1,
+                    delay: intro + 0.08 + index * 0.12,
+                    ease: luxEase,
+                  }}
+                >
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
 
           {/* The slash sweeps left to right and the role is uncovered right behind it. */}
           <div className="display-font mt-8 pr-8 text-xl font-medium tracking-[-0.07em] text-ink sm:text-3xl">
@@ -92,9 +200,7 @@ export default function Hero() {
           </div>
 
           <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
+            {...fadeUp(intro + 0.45)}
             className="body-copy mt-5 max-w-xl"
           >
             I design and ship scalable web applications from front to back, with
@@ -102,129 +208,106 @@ export default function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.68 }}
+            {...fadeUp(intro + 0.6)}
             className="mt-8 flex flex-wrap items-center gap-5"
           >
-            <a href="#work" onClick={(event) => scrollToSection(event, "#work")} className="button-primary">
-              View selected work <ArrowUpRight size={16} strokeWidth={1.8} />
+            <a
+              href="#work"
+              onClick={(event) => scrollToSection(event, "#work")}
+              className="lux-cta"
+            >
+              <span>View selected work</span>
+              <span className="lux-cta-icon" aria-hidden="true">
+                <ArrowUpRight size={17} strokeWidth={1.8} />
+              </span>
             </a>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="mono-font mt-14 flex flex-wrap gap-x-8 gap-y-3 text-[0.66rem] uppercase tracking-[0.12em] text-moss"
+            {...fadeUp(intro + 0.75, 12)}
+            className="hero-stats mt-10"
           >
-            <span>3.8 years building</span>
-            <span>10+ shipped projects</span>
-            <span className="flex items-center gap-2 text-ink">
-              <span className="h-2 w-2 rounded-full bg-coral" /> India / Remote
-            </span>
+            <div className="hero-stat">
+              <span className="hero-stat-value">3.8</span>
+              <span className="hero-stat-label">years building</span>
+            </div>
+            <div className="hero-stat">
+              <span className="hero-stat-value">10+</span>
+              <span className="hero-stat-label">shipped projects</span>
+            </div>
+            <div className="hero-stat hero-stat-location">
+              <span className="hero-location-dot" aria-hidden="true" />
+              <span className="hero-stat-label text-ink">India / Remote</span>
+            </div>
           </motion.div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, x: 30, rotate: 2 }}
-          animate={{ opacity: 1, x: 0, rotate: 0 }}
-          transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.2, delay: intro + 0.25, ease: luxEase }}
           className="relative z-10 mx-auto w-full max-w-[31rem] lg:ml-auto"
         >
-          <div className="hero-console console-grid p-5 sm:p-7">
-            <div className="relative z-10 flex items-center justify-between border-b border-paper/20 pb-4">
-              <div className="flex items-center gap-2">
-                <Code2 size={16} className="text-lime" strokeWidth={1.6} />
-                <span className="mono-font text-[0.66rem] tracking-[0.12em] text-paper/70">
+          <div className="hero-card-glow" aria-hidden="true" />
+          <motion.div
+            onPointerMove={handleCardMove}
+            onPointerLeave={resetCard}
+            style={{
+              rotateX: tiltX,
+              rotateY: tiltY,
+              transformPerspective: 1200,
+            }}
+            className="hero-card"
+          >
+            <div className="hero-card-header">
+              <div className="flex items-center gap-3">
+                <span className="hero-window-dots" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+                <span className="flex items-center gap-2 mono-font text-[0.66rem] tracking-[0.12em] text-paper/70">
+                  <Code2 size={14} className="text-lime" strokeWidth={1.6} />
                   developer.config.ts
                 </span>
               </div>
-              <span className="flex items-center gap-1.5 mono-font text-[0.58rem] uppercase tracking-[0.1em] text-lime">
-                <Check size={12} /> online
+              <span className="hero-online">
+                <span className="hero-online-dot" aria-hidden="true" /> online
               </span>
             </div>
 
-            <div className="relative z-10 py-6">
-              <div className="console-line">
-                <span>01</span>
-                <span>
-                  <i className="text-coral not-italic">const</i> developer ={" "}
-                  {"{"}
-                </span>
-              </div>
-              <div className="console-line">
-                <span>02</span>
-                <span className="pl-4">
-                  name:{" "}
-                  <b className="font-normal text-lime">
-                    &quot;Vishal Kukde&quot;
-                  </b>
-                  ,
-                </span>
-              </div>
-              <div className="console-line">
-                <span>03</span>
-                <span className="pl-4">
-                  role:{" "}
-                  <b className="font-normal text-lime">
-                    &quot;Senior Full Stack Developer&quot;
-                  </b>
-                  ,
-                </span>
-              </div>
-              <div className="console-line">
-                <span>04</span>
-                <span className="pl-4">
-                  focus:{" "}
-                  <b className="font-normal text-coral">
-                    &quot;useful complexity&quot;
-                  </b>
-                  ,
-                </span>
-              </div>
-              <div className="console-line">
-                <span>05</span>
-                <span className="pl-4">stack: [</span>
-              </div>
-              <div className="console-line">
-                <span>06</span>
-                <span className="pl-8 text-teal">
-                  &quot;React&quot;, &quot;Next.js&quot;, &quot;Node.js&quot;,
-                </span>
-              </div>
-              <div className="console-line">
-                <span>07</span>
-                <span className="pl-8 text-teal">
-                  &quot;Express.js&quot;, &quot;MongoDB&quot;
-                </span>
-              </div>
-              <div className="console-line">
-                <span>08</span>
-                <span className="pl-4">],</span>
-              </div>
-              <div className="console-line">
-                <span>09</span>
-                <span className="pl-4">
-                  status:{" "}
-                  <b className="font-normal text-lime">
-                    &quot;open to good work&quot;
-                  </b>
-                </span>
-              </div>
-              <div className="console-line">
-                <span>10</span>
-                <span>{"}"};</span>
-              </div>
-            </div>
+            <motion.div
+              className="relative z-10 py-6"
+              initial="hidden"
+              animate="show"
+              transition={{ delayChildren: intro + 0.6, staggerChildren: 0.06 }}
+            >
+              {codeLines.map((line, index) => (
+                <motion.div
+                  key={index}
+                  className="console-line"
+                  variants={{
+                    hidden: { opacity: 0, x: -8 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                  transition={{ duration: 0.5, ease: luxEase }}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span className={line.indent}>{line.content}</span>
+                </motion.div>
+              ))}
+            </motion.div>
 
-            <div className="relative z-10 flex items-center justify-between border-t border-paper/20 pt-4 mono-font text-[0.58rem] uppercase tracking-[0.1em] text-paper/50">
+            <div className="hero-card-footer">
               <span>ships with care</span>
               <span className="text-coral">v.01</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="mt-5 flex items-start justify-between gap-5">
+          <motion.div
+            {...fadeUp(intro + 0.9, 10)}
+            className="mt-7 flex items-center justify-between gap-5"
+          >
             <p className="mono-font max-w-[14rem] text-[0.62rem] uppercase leading-relaxed tracking-[0.1em] text-moss">
               The best work lives between engineering discipline and a little
               curiosity.
@@ -233,16 +316,11 @@ export default function Hero() {
               href="#about"
               onClick={(event) => scrollToSection(event, "#about")}
               aria-label="Scroll to about section"
-              className="group flex items-center gap-2 mono-font text-[0.62rem] uppercase tracking-[0.1em] text-ink"
+              className="hero-scroll"
             >
-              <span className="h-8 w-px bg-ink transition-transform group-hover:scale-y-150" />
-              <ArrowDown
-                size={15}
-                className="animate-bounce"
-                strokeWidth={1.6}
-              />
+              <span className="hero-scroll-dot" />
             </a>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

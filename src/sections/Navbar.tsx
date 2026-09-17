@@ -5,13 +5,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 import { scrollToSection } from "@/lib/scroll";
-
-type NavTheme = "light" | "dark" | "coral";
+import { sectionAt, themeOf, type SectionTheme } from "@/lib/sections";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<NavTheme>("light");
+  const [theme, setTheme] = useState<SectionTheme>("light");
+  const [activeHref, setActiveHref] = useState<string | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,18 +19,17 @@ export default function Navbar() {
       setScrolled(window.scrollY > 24);
 
       // Match the section currently behind the bar so it stays legible on dark and coral backgrounds.
-      // Sections stack on top of each other, so hit-test the painted one rather than comparing rects.
       const bar = barRef.current;
       if (!bar) return;
+      const header = bar.parentElement;
+      const centerX = window.innerWidth / 2;
       const { top, height } = bar.getBoundingClientRect();
-      const section = document
-        .elementsFromPoint(window.innerWidth / 2, top + height / 2)
-        .filter((element) => !bar.parentElement?.contains(element))
-        .map((element) =>
-          element.closest<HTMLElement>(".stack-main > section, footer"),
-        )
-        .find(Boolean);
-      setTheme((section?.dataset.navTheme as NavTheme | undefined) ?? "light");
+      setTheme(themeOf(sectionAt(centerX, top + height / 2, header)));
+
+      // The active link follows whichever section fills the middle of the screen.
+      const inView = sectionAt(centerX, window.innerHeight / 2, header);
+      const href = inView?.tagName === "FOOTER" ? "#contact" : inView ? `#${inView.id}` : null;
+      setActiveHref(NAV_LINKS.some((link) => link.href === href) ? href : null);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -76,16 +75,29 @@ export default function Navbar() {
           aria-label="Main navigation"
           className="hidden items-center gap-7 md:flex"
         >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(event) => scrollToSection(event, link.href)}
-              className="nav-link"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = link.href === activeHref;
+
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(event) => scrollToSection(event, link.href)}
+                aria-current={active ? "location" : undefined}
+                className={`nav-link ${active ? "is-active" : ""}`}
+              >
+                {link.label}
+                {active && (
+                  // Shared layoutId makes the bar glide from the previous link to this one.
+                  <motion.span
+                    layoutId="nav-active-bar"
+                    className="nav-active-bar"
+                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         <a
@@ -132,7 +144,10 @@ export default function Navbar() {
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.04 }}
-                  className="display-font flex items-center justify-between border-b border-ink/15 pb-3 text-2xl font-medium tracking-[-0.06em]"
+                  aria-current={link.href === activeHref ? "location" : undefined}
+                  className={`display-font flex items-center justify-between border-b border-ink/15 pb-3 text-2xl font-medium tracking-[-0.06em] ${
+                    link.href === activeHref ? "text-coral" : ""
+                  }`}
                 >
                   <span>{link.label}</span>
                   <ArrowUpRight size={17} strokeWidth={1.7} />

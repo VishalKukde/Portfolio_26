@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react';
 
 // Stuck sections report their pinned position, so measure with stacking briefly disabled.
-function getNaturalTop(target: HTMLElement) {
+export function getNaturalTop(target: HTMLElement) {
   const stack = target.closest('.stack-main.is-stacking');
   stack?.classList.remove('is-stacking');
   const top = target.getBoundingClientRect().top + window.scrollY;
