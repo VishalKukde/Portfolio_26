@@ -506,6 +506,27 @@ textarea:focus-visible {
   user-select: none;
 }
 
+.project-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .project-stack {
+    gap: 5rem;
+  }
+}
+
+.project-stack.is-stacked {
+  display: grid;
+}
+
+.project-stack.is-stacked > [data-stack-card] {
+  grid-area: 1 / 1;
+  will-change: transform, opacity;
+}
+
 .project-card {
   position: relative;
   overflow: hidden;
@@ -866,11 +887,110 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 1px solid var(--ink);
+  border-radius: 0.75rem;
   color: var(--ink);
   background: transparent;
+}
+
+.site-nav-bar {
+  border-color: rgba(20, 32, 29, 0.1);
+  background: rgba(241, 238, 230, 0.25);
+  backdrop-filter: blur(4px);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.site-nav-bar.is-scrolled {
+  border-color: rgba(20, 32, 29, 0.15);
+  background: rgba(241, 238, 230, 0.55);
+  box-shadow: 0 10px 40px rgba(9, 20, 17, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.site-nav-logo {
+  color: var(--lime);
+  background: var(--ink);
+  transition:
+    transform 150ms ease,
+    color 300ms ease,
+    background-color 300ms ease;
+}
+
+.site-nav-name {
+  color: var(--ink);
+  transition: color 300ms ease;
+}
+
+/* Dark sections (work, footer) */
+.site-nav[data-theme="dark"] .site-nav-bar {
+  border-color: rgba(241, 238, 230, 0.14);
+  background: rgba(20, 32, 29, 0.55);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+}
+
+.site-nav[data-theme="dark"] .site-nav-logo {
+  color: var(--ink);
+  background: var(--lime);
+}
+
+.site-nav[data-theme="dark"] .site-nav-name,
+.site-nav[data-theme="dark"] .nav-link:hover,
+.site-nav[data-theme="dark"] .menu-button {
+  color: var(--paper);
+}
+
+.site-nav[data-theme="dark"] .nav-link {
+  color: rgba(241, 238, 230, 0.62);
+}
+
+.site-nav[data-theme="dark"] .menu-button {
+  border-color: rgba(241, 238, 230, 0.5);
+}
+
+.site-nav[data-theme="dark"] .nav-cta {
+  box-shadow: 3px 3px 0 var(--paper);
+}
+
+.site-nav[data-theme="dark"] .nav-cta:hover,
+.site-nav[data-theme="dark"] .nav-cta:focus-visible {
+  box-shadow: 1px 1px 0 var(--paper);
+}
+
+/* Coral section (contact) */
+.site-nav[data-theme="coral"] .site-nav-bar {
+  border-color: rgba(20, 32, 29, 0.18);
+  background: rgba(255, 118, 95, 0.6);
+  box-shadow: 0 10px 40px rgba(9, 20, 17, 0.1);
+}
+
+.site-nav[data-theme="coral"] .nav-link {
+  color: rgba(20, 32, 29, 0.7);
+}
+
+.site-nav[data-theme="coral"] .nav-link:hover {
+  color: var(--ink);
+}
+
+.site-nav[data-theme="coral"] .nav-link::after {
+  background: var(--ink);
+}
+
+.nav-cta {
+  min-height: 0;
+  padding: 0.55rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.62rem;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.nav-cta:hover,
+.nav-cta:focus-visible {
+  box-shadow: 1px 1px 0 var(--ink);
 }
 
 .nav-link {

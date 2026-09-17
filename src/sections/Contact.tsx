@@ -30,7 +30,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="section-pad bg-coral">
+    <section id="contact" data-nav-theme="coral" className="section-pad bg-coral">
       <div className="site-container">
         <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
           <div>

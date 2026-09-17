@@ -11,8 +11,9 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const stack = stackRef.current;
 
-    if (reduceMotion || !stackRef.current) {
+    if (reduceMotion || !stack) {
       return undefined;
     }
 
@@ -20,36 +21,57 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
     const media = gsap.matchMedia();
 
     media.add("(min-width: 768px)", () => {
-      const cards = gsap.utils.toArray<HTMLElement>(
-        "[data-stack-card]",
-        stackRef.current,
-      );
+      const cards = gsap.utils.toArray<HTMLElement>("[data-stack-card]", stack);
 
-      cards.forEach((card, index) => {
-        if (index === cards.length - 1) {
-          return;
-        }
+      if (cards.length < 2) {
+        return undefined;
+      }
 
-        // Each card pins as the next card arrives. Scrubbing its scale and opacity
-        // makes the incoming card feel like it is taking the top of the stack.
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top top+=104",
-          end: `+=${Math.round(card.offsetHeight * 0.82)}`,
+      // All cards share one grid cell, so only the active card is visible while
+      // the stage is pinned and each scroll step hands off to the next card.
+      stack.classList.add("is-stacked");
+      gsap.set(cards.slice(1), { autoAlpha: 0, y: 120 });
+
+      const timeline = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: stack,
+          start: "center center+=36",
+          end: () => `+=${(cards.length - 1) * window.innerHeight}`,
           pin: true,
-          pinSpacing: false,
-          scrub: true,
-          onUpdate: (self) => {
-            gsap.set(card, {
-              scale: 1 - self.progress * 0.055,
-              opacity: 1 - self.progress * 0.28,
-            });
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+          snap: {
+            snapTo: "labelsDirectional",
+            duration: { min: 0.35, max: 0.9 },
+            delay: 0.08,
+            ease: "power2.inOut",
           },
-        });
+        },
+      });
+
+      timeline.addLabel("card-0", 0);
+
+      cards.slice(1).forEach((card, step) => {
+        timeline
+          .to(
+            cards[step],
+            {
+              autoAlpha: 0,
+              scale: 0.94,
+              y: -60,
+              duration: 0.6,
+              ease: "power2.in",
+            },
+            step,
+          )
+          .to(card, { autoAlpha: 1, y: 0, duration: 0.65 }, step + 0.35)
+          .addLabel(`card-${step + 1}`, step + 1);
       });
 
       return () => {
-        gsap.set(cards, { clearProps: "transform,opacity" });
+        stack.classList.remove("is-stacked");
+        gsap.set(cards, { clearProps: "transform,opacity,visibility" });
       };
     });
 
@@ -57,7 +79,7 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div ref={stackRef} className="space-y-8 md:space-y-20" data-project-stack>
+    <div ref={stackRef} className="project-stack" data-project-stack>
       {children}
     </div>
   );

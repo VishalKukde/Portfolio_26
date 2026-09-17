@@ -12,7 +12,7 @@ function SocialIcon({ label }: { label: string }) {
 
 export default function Footer() {
   return (
-    <footer className="footer-cta border-t border-paper/20 py-10">
+    <footer data-nav-theme="dark" className="footer-cta border-t border-paper/20 py-10">
       <div className="site-container">
         <div className="flex flex-col justify-between gap-10 md:flex-row md:items-end">
           <div>
