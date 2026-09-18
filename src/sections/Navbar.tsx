@@ -6,6 +6,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 import { scrollToSection } from "@/lib/scroll";
 import { sectionAt, themeOf, type SectionTheme } from "@/lib/sections";
+import { lockScroll, unlockScroll } from "@/lib/lenis";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,6 +40,13 @@ export default function Navbar() {
       window.removeEventListener("resize", handleScroll);
     };
   }, []);
+
+  // The open mobile menu freezes the page underneath it.
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    lockScroll("mobile-menu");
+    return () => unlockScroll("mobile-menu");
+  }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -104,6 +112,7 @@ export default function Navbar() {
           href="#contact"
           onClick={(event) => scrollToSection(event, "#contact")}
           className="button-primary nav-cta hidden sm:inline-flex"
+          data-magnetic="0.25"
         >
           Let&apos;s talk <ArrowUpRight size={14} strokeWidth={1.8} />
         </a>

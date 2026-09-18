@@ -57,10 +57,16 @@ function FooterWordmark({ text }: { text: string }) {
 
     // The footer layout is untouched: the letters grow upward behind the footer content.
     const MAX_STRETCH = 0.35;
+    // Phones skip the stretch; it is a desktop and tablet scroll effect.
+    const phone = window.matchMedia("(max-width: 767px)");
     let frame = 0;
 
     const update = () => {
       frame = 0;
+      if (phone.matches) {
+        wrap.style.transform = "";
+        return;
+      }
       const zone = wrap.offsetHeight * (1 + MAX_STRETCH);
       const remaining =
         document.documentElement.scrollHeight -
@@ -152,6 +158,7 @@ export default function Footer() {
                   rel="noreferrer"
                   aria-label={social.label}
                   className="social-link"
+                  data-magnetic="0.45"
                 >
                   <SocialIcon label={social.label} />
                 </a>
@@ -194,6 +201,7 @@ export default function Footer() {
                   rel="noreferrer"
                   aria-label={`View ${version.label} portfolio (opens in a new tab)`}
                   className="footer-version"
+                  data-magnetic="0.25"
                 >
                   <span className="footer-version-year">{version.label}</span>
                   <span className="footer-version-url">Portfolio</span>
@@ -220,6 +228,7 @@ export default function Footer() {
             onClick={(event) => scrollToSection(event, "#home")}
             aria-label="Back to top"
             className="footer-top"
+            data-magnetic="0.45"
           >
             <ArrowUp size={15} strokeWidth={1.8} />
           </a>

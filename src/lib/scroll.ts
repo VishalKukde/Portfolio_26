@@ -1,4 +1,7 @@
 import type { MouseEvent } from 'react';
+import { getLenis } from '@/lib/lenis';
+
+const easeInOutQuart = (t: number) => (t < 0.5 ? 8 * t ** 4 : 1 - (-2 * t + 2) ** 4 / 2);
 
 // Stuck sections report their pinned position, so measure with stacking briefly disabled.
 export function getNaturalTop(target: HTMLElement) {
@@ -21,9 +24,17 @@ export function scrollToSection(event: MouseEvent<HTMLAnchorElement>, href: stri
   }
 
   event.preventDefault();
-  window.scrollTo({
-    top: getNaturalTop(target),
-    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-  });
+  const top = getNaturalTop(target);
+  const lenis = getLenis();
+
+  // Let Lenis drive the jump when it exists, so it doesn't fight the browser's own smooth scroll.
+  if (lenis) {
+    lenis.scrollTo(top, { duration: 1.4, easing: easeInOutQuart, force: true });
+  } else {
+    window.scrollTo({
+      top,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
+  }
   window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
 }

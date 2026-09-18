@@ -10,6 +10,8 @@ import Projects from '@/sections/Projects';
 import Skills from '@/sections/Skills';
 import SectionStack from '@/components/SectionStack';
 import CursorBall from '@/components/CursorBall';
+import MagneticEffects from '@/components/MagneticEffects';
+import SplitHeadings from '@/components/SplitHeadings';
 import PageTimeline from '@/components/PageTimeline';
 import HeroV2 from '@/sections/HeroV2';
 import { HERO_VERSION } from '@/constants';
@@ -19,6 +21,8 @@ export default function Home() {
     <>
       <LoadingScreen />
       <CursorBall />
+      <MagneticEffects />
+      <SplitHeadings />
       <Background />
       <div className="content-layer">
         <Navbar />

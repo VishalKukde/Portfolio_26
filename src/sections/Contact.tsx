@@ -66,7 +66,7 @@ export default function Contact() {
               <span className="lux-pill-dot" aria-hidden="true" />
               One more thing
             </span>
-            <h2 className="display-font contact-title mt-6 text-6xl font-medium leading-[0.9] text-ink sm:text-8xl">
+            <h2 data-split className="display-font contact-title mt-6 text-6xl font-medium leading-[0.9] text-ink sm:text-8xl">
               Let&apos;s make something <span className="lux-accent">useful.</span>
             </h2>
             <p className="mt-7 max-w-md text-base leading-7 text-ink/75">
@@ -84,6 +84,7 @@ export default function Contact() {
                 type="button"
                 onClick={copyEmail}
                 className="contact-copy"
+                data-magnetic="0.45"
                 aria-label={copied ? 'Email copied' : 'Copy email address'}
               >
                 {copied ? <Check size={15} strokeWidth={2} /> : <Copy size={15} strokeWidth={1.7} />}
@@ -152,7 +153,7 @@ export default function Contact() {
                     <textarea required minLength={10} rows={5} value={form.message} onChange={(event) => updateField('message', event.target.value)} placeholder="A sentence or two about the challenge..." className="input-field resize-none" />
                   </label>
                   <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                    <button type="submit" className="lux-cta">
+                    <button type="submit" className="lux-cta" data-magnetic="0.25">
                       <span>Open an email draft</span>
                       <span className="lux-cta-icon" aria-hidden="true">
                         <Send size={16} strokeWidth={1.7} />

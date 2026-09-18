@@ -1,6 +1,8 @@
 "use client";
 
-import type { PointerEvent, ReactNode } from "react";
+import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   motion,
   useMotionValue,
@@ -10,6 +12,9 @@ import {
 import { ArrowUpRight, Code2 } from "lucide-react";
 import { scrollToSection } from "@/lib/scroll";
 import { LOADING_DURATION } from "@/components/LoadingScreen";
+import CountUp from "@/components/CountUp";
+import { CAREER_START } from "@/constants";
+import { formatYearsMonths, monthsBetween } from "@/lib/experience";
 
 // Everything waits for the splash screen, otherwise the entrance plays unseen behind it.
 const intro = LOADING_DURATION / 1000 + 0.1;
@@ -123,12 +128,56 @@ export default function Hero() {
     tiltY.set(0);
   };
 
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-out parallax: while the hero holds and About slides over it, its layers drift at
+  // different speeds and the card recedes. Plain wrapper elements are used so these transforms
+  // never collide with the Framer entrance animations inside them.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const media = gsap.matchMedia(section);
+
+    // Desktop and tablet only; phones skip this heavier scroll effect.
+    media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+      const timeline = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          endTrigger: "#about",
+          end: "top top",
+          scrub: 0.6,
+        },
+      });
+
+      timeline
+        .to("[data-hero-layer=ambient]", { yPercent: 18 }, 0)
+        .to("[data-hero-layer=mark]", { yPercent: -30 }, 0)
+        .to("[data-hero-layer=copy]", { yPercent: -12, autoAlpha: 0.35 }, 0)
+        .to(
+          "[data-hero-layer=card]",
+          { yPercent: -22, scale: 0.9, autoAlpha: 0.5 },
+          0,
+        );
+    });
+
+    return () => media.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="home"
       className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-24 md:pb-20 md:pt-28"
     >
-      <div className="hero-ambient" aria-hidden="true">
+      <div
+        className="hero-ambient"
+        data-hero-layer="ambient"
+        aria-hidden="true"
+      >
         <span className="hero-aura hero-aura-lime" />
         <span className="hero-aura hero-aura-coral" />
         <span className="hero-aura hero-aura-teal" />
@@ -136,12 +185,12 @@ export default function Hero() {
         <span className="hero-orbit hero-orbit-inner" />
         <span className="hero-grain" />
       </div>
-      <div className="hero-mark" aria-hidden="true">
+      <div className="hero-mark" data-hero-layer="mark" aria-hidden="true">
         VK
       </div>
 
       <div className="site-container relative grid items-center gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
-        <div className="relative z-10">
+        <div className="relative z-10" data-hero-layer="copy">
           <motion.div {...fadeUp(intro, 12)} className="hero-pill">
             <span className="hero-pill-dot" aria-hidden="true" />
             Available for meaningful problems
@@ -215,6 +264,7 @@ export default function Hero() {
               href="#work"
               onClick={(event) => scrollToSection(event, "#work")}
               className="lux-cta"
+              data-magnetic="0.25"
             >
               <span>View selected work</span>
               <span className="lux-cta-icon" aria-hidden="true">
@@ -228,11 +278,22 @@ export default function Hero() {
             className="hero-stats mt-10"
           >
             <div className="hero-stat">
-              <span className="hero-stat-value">3.8</span>
+              {/* Counts up month by month to the experience since CAREER_START. */}
+              <CountUp
+                value={monthsBetween(CAREER_START)}
+                format={formatYearsMonths}
+                delay={0.85}
+                className="hero-stat-value"
+              />
               <span className="hero-stat-label">years building</span>
             </div>
             <div className="hero-stat">
-              <span className="hero-stat-value">10+</span>
+              <CountUp
+                value={10}
+                suffix="+"
+                delay={0.95}
+                className="hero-stat-value"
+              />
               <span className="hero-stat-label">shipped projects</span>
             </div>
             <div className="hero-stat hero-stat-location">
@@ -242,86 +303,95 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.2, delay: intro + 0.25, ease: luxEase }}
+        <div
+          data-hero-layer="card"
           className="relative z-10 mx-auto w-full max-w-[31rem] lg:ml-auto"
         >
-          <div className="hero-card-glow" aria-hidden="true" />
           <motion.div
-            onPointerMove={handleCardMove}
-            onPointerLeave={resetCard}
-            style={{
-              rotateX: tiltX,
-              rotateY: tiltY,
-              transformPerspective: 1200,
-            }}
-            className="hero-card"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, delay: intro + 0.25, ease: luxEase }}
+            className="relative"
           >
-            <div className="hero-card-header">
-              <div className="flex items-center gap-3">
-                <span className="hero-window-dots" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-                <span className="flex items-center gap-2 mono-font text-[0.66rem] tracking-[0.12em] text-paper/70">
-                  <Code2 size={14} className="text-lime" strokeWidth={1.6} />
-                  developer.config.ts
+            <div className="hero-card-glow" aria-hidden="true" />
+            <motion.div
+              onPointerMove={handleCardMove}
+              onPointerLeave={resetCard}
+              style={{
+                rotateX: tiltX,
+                rotateY: tiltY,
+                transformPerspective: 1200,
+              }}
+              className="hero-card"
+            >
+              <div className="hero-card-header">
+                <div className="flex items-center gap-3">
+                  <span className="hero-window-dots" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                  <span className="flex items-center gap-2 mono-font text-[0.66rem] tracking-[0.12em] text-paper/70">
+                    <Code2 size={14} className="text-lime" strokeWidth={1.6} />
+                    developer.config.ts
+                  </span>
+                </div>
+                <span className="hero-online">
+                  <span className="hero-online-dot" aria-hidden="true" /> online
                 </span>
               </div>
-              <span className="hero-online">
-                <span className="hero-online-dot" aria-hidden="true" /> online
-              </span>
-            </div>
 
-            <motion.div
-              className="relative z-10 py-6"
-              initial="hidden"
-              animate="show"
-              transition={{ delayChildren: intro + 0.6, staggerChildren: 0.06 }}
-            >
-              {codeLines.map((line, index) => (
-                <motion.div
-                  key={index}
-                  className="console-line"
-                  variants={{
-                    hidden: { opacity: 0, x: -8 },
-                    show: { opacity: 1, x: 0 },
-                  }}
-                  transition={{ duration: 0.5, ease: luxEase }}
-                >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <span className={line.indent}>{line.content}</span>
-                </motion.div>
-              ))}
+              <motion.div
+                className="relative z-10 py-6"
+                initial="hidden"
+                animate="show"
+                transition={{
+                  delayChildren: intro + 0.6,
+                  staggerChildren: 0.06,
+                }}
+              >
+                {codeLines.map((line, index) => (
+                  <motion.div
+                    key={index}
+                    className="console-line"
+                    variants={{
+                      hidden: { opacity: 0, x: -8 },
+                      show: { opacity: 1, x: 0 },
+                    }}
+                    transition={{ duration: 0.5, ease: luxEase }}
+                  >
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <span className={line.indent}>{line.content}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <div className="hero-card-footer">
+                <span>ships with care</span>
+                <span className="text-coral">v.01</span>
+              </div>
             </motion.div>
 
-            <div className="hero-card-footer">
-              <span>ships with care</span>
-              <span className="text-coral">v.01</span>
-            </div>
-          </motion.div>
-
-          <motion.div
-            {...fadeUp(intro + 0.9, 10)}
-            className="mt-7 flex items-center justify-between gap-5"
-          >
-            <p className="mono-font max-w-[14rem] text-[0.62rem] uppercase leading-relaxed tracking-[0.1em] text-moss">
-              The best work lives between engineering discipline and a little
-              curiosity.
-            </p>
-            <a
-              href="#about"
-              onClick={(event) => scrollToSection(event, "#about")}
-              aria-label="Scroll to about section"
-              className="hero-scroll"
+            <motion.div
+              {...fadeUp(intro + 0.9, 10)}
+              className="mt-7 flex items-center justify-between gap-5"
             >
-              <span className="hero-scroll-dot" />
-            </a>
+              <p className="mono-font max-w-[14rem] text-[0.62rem] uppercase leading-relaxed tracking-[0.1em] text-moss">
+                The best work lives between engineering discipline and a little
+                curiosity.
+              </p>
+              <a
+                href="#about"
+                onClick={(event) => scrollToSection(event, "#about")}
+                aria-label="Scroll to about section"
+                className="hero-scroll"
+                data-magnetic="0.4"
+              >
+                <span className="hero-scroll-dot" />
+              </a>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

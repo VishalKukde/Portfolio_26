@@ -2,8 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { lockScroll, unlockScroll } from '@/lib/lenis';
+import { markSplashDone } from '@/lib/splash';
 
 export const LOADING_DURATION = 2000;
+
+// Curtain exit: the dark screen wipes upward, trailed by a thin lime layer that follows a beat later.
+const CURTAIN_EASE = [0.76, 0, 0.24, 1] as const;
+const CURTAIN_OPEN = 'inset(0% 0% 0% 0%)';
+const CURTAIN_CLOSED = 'inset(0% 0% 100% 0%)';
 
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
@@ -27,11 +34,18 @@ export default function LoadingScreen() {
     };
 
     frameId = requestAnimationFrame(updateProgress);
-    const hideTimer = window.setTimeout(() => setVisible(false), LOADING_DURATION);
+    // Keep the page still behind the splash so it doesn't reveal a half-scrolled page.
+    lockScroll('splash');
+    const hideTimer = window.setTimeout(() => {
+      setVisible(false);
+      unlockScroll('splash');
+      markSplashDone();
+    }, LOADING_DURATION);
 
     return () => {
       cancelAnimationFrame(frameId);
       window.clearTimeout(hideTimer);
+      unlockScroll('splash');
     };
   }, []);
 
@@ -39,8 +53,18 @@ export default function LoadingScreen() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.45, ease: 'easeInOut' } }}
+          key="curtain-accent"
+          className="loading-curtain-accent"
+          initial={{ clipPath: CURTAIN_OPEN }}
+          exit={{ clipPath: CURTAIN_CLOSED, transition: { duration: 0.9, delay: 0.14, ease: CURTAIN_EASE } }}
+          aria-hidden="true"
+        />
+      )}
+      {visible && (
+        <motion.div
+          key="curtain"
+          initial={{ clipPath: CURTAIN_OPEN }}
+          exit={{ clipPath: CURTAIN_CLOSED, transition: { duration: 0.9, ease: CURTAIN_EASE } }}
           className="loading-screen"
           role="status"
           aria-label={`Loading portfolio ${progress}%`}

@@ -4,6 +4,9 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const HIDDEN_CLIP = "inset(100% 0% 0% 0%)";
+const SHOWN_CLIP = "inset(0% 0% 0% 0%)";
+
 export default function ProjectStack({ children }: { children: ReactNode }) {
   const stackRef = useRef<HTMLDivElement>(null);
   // Which card is showing while the stage is pinned; total is 0 when not stacked.
@@ -38,6 +41,21 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
       stack.classList.add("is-stacked");
       setProgress({ active: 0, total: cards.length, pinned: false });
       gsap.set(cards.slice(1), { autoAlpha: 0, y: 120 });
+
+      const mediaOf = (card: HTMLElement) =>
+        card.querySelector("[data-project-media]");
+      const parallaxOf = (card: HTMLElement) =>
+        card.querySelector("[data-project-parallax]");
+
+      // Screenshots start wiped closed; the first one opens when the stage scrolls into view.
+      gsap.set(cards.map(mediaOf), { clipPath: HIDDEN_CLIP });
+      gsap.set(cards.slice(1).map(parallaxOf), { yPercent: 8 });
+      gsap.to(mediaOf(cards[0]), {
+        clipPath: SHOWN_CLIP,
+        duration: 1.2,
+        ease: "power3.inOut",
+        scrollTrigger: { trigger: stack, start: "top 75%", once: true },
+      });
 
       const timeline = gsap.timeline({
         defaults: { ease: "power3.out" },
@@ -83,6 +101,22 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
             step,
           )
           .to(card, { autoAlpha: 1, y: 0, duration: 0.65 }, step + 0.35)
+          // The outgoing screenshot drifts up while the incoming one wipes open and settles.
+          .to(
+            parallaxOf(cards[step]),
+            { yPercent: -8, duration: 0.6, ease: "none" },
+            step,
+          )
+          .to(
+            parallaxOf(card),
+            { yPercent: 0, duration: 0.65, ease: "power2.out" },
+            step + 0.35,
+          )
+          .to(
+            mediaOf(card),
+            { clipPath: SHOWN_CLIP, duration: 0.6, ease: "power3.inOut" },
+            step + 0.4,
+          )
           .addLabel(`card-${step + 1}`, step + 1);
       });
 
@@ -91,6 +125,30 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
         setProgress({ active: 0, total: 0, pinned: false });
         gsap.set(cards, { clearProps: "transform,opacity,visibility" });
       };
+    });
+
+    // On phones the cards are a normal list: each screenshot just wipes open once (no parallax).
+    media.add("(max-width: 767px)", () => {
+      gsap.utils
+        .toArray<HTMLElement>("[data-stack-card]", stack)
+        .forEach((card) => {
+          const cardMedia = card.querySelector("[data-project-media]");
+
+          gsap.fromTo(
+            cardMedia,
+            { clipPath: HIDDEN_CLIP },
+            {
+              clipPath: SHOWN_CLIP,
+              duration: 1.1,
+              ease: "power3.inOut",
+              scrollTrigger: {
+                trigger: cardMedia,
+                start: "top 85%",
+                once: true,
+              },
+            },
+          );
+        });
     });
 
     return () => media.revert();

@@ -21,20 +21,47 @@ export default function CursorBall() {
     let frame = 0;
     let visible = false;
 
+    // A hovered magnetic element the ball locks onto.
+    let magnet: HTMLElement | null = null;
+
     const updateContext = () => {
-      ball.dataset.theme = themeOf(sectionAt(target.x, target.y));
-      const hovered = document.elementFromPoint(target.x, target.y)?.closest(INTERACTIVE);
-      ball.classList.toggle("is-hovering", Boolean(hovered));
+      const underPointer = document.elementFromPoint(target.x, target.y);
+      // Over the splash the ball uses the dark palette; elsewhere it follows the section below.
+      ball.dataset.theme = underPointer?.closest(".loading-screen")
+        ? "dark"
+        : themeOf(sectionAt(target.x, target.y));
+      ball.classList.toggle("is-hovering", Boolean(underPointer?.closest(INTERACTIVE)));
+
+      magnet = underPointer?.closest<HTMLElement>("[data-magnetic]") ?? null;
+      ball.classList.toggle("is-snapped", Boolean(magnet));
+      if (magnet) {
+        // Round buttons get a ring sized to them; pill buttons keep the standard ring.
+        const { width, height } = magnet.getBoundingClientRect();
+        const round = Math.abs(width - height) < 6;
+        ball.style.setProperty("--snap-size", round ? `${width + 14}px` : "");
+      }
     };
 
     const render = () => {
-      // Easing toward the pointer gives the ball its smooth trailing motion.
+      // While locked to a magnetic element the ball aims at its center, nudged slightly toward the
+      // pointer; otherwise easing toward the pointer gives it the smooth trailing motion.
+      let aimX = target.x;
+      let aimY = target.y;
+      if (magnet) {
+        const rect = magnet.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        aimX = centerX + (target.x - centerX) * 0.2;
+        aimY = centerY + (target.y - centerY) * 0.2;
+      }
+
       const ease = reduceMotion ? 1 : 0.18;
-      current.x += (target.x - current.x) * ease;
-      current.y += (target.y - current.y) * ease;
+      current.x += (aimX - current.x) * ease;
+      current.y += (aimY - current.y) * ease;
       ball.style.transform = `translate3d(${current.x}px, ${current.y}px, 0)`;
 
-      if (Math.abs(target.x - current.x) > 0.1 || Math.abs(target.y - current.y) > 0.1) {
+      // Keep rendering while locked, since the magnetic element itself is still moving.
+      if (magnet || Math.abs(aimX - current.x) > 0.1 || Math.abs(aimY - current.y) > 0.1) {
         frame = requestAnimationFrame(render);
       } else {
         frame = 0;
@@ -64,13 +91,19 @@ export default function CursorBall() {
 
     const handleLeave = () => {
       visible = false;
+      magnet = null;
+      ball.classList.remove("is-snapped");
       ball.classList.remove("is-visible");
     };
 
     const handleDown = () => ball.classList.add("is-pressed");
     const handleUp = () => ball.classList.remove("is-pressed");
     // Sections slide under a still pointer while scrolling, so refresh the color then too.
-    const handleScroll = () => visible && updateContext();
+    const handleScroll = () => {
+      if (!visible) return;
+      updateContext();
+      requestRender();
+    };
 
     window.addEventListener("pointermove", handleMove, { passive: true });
     window.addEventListener("pointerdown", handleDown);

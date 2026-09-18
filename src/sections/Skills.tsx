@@ -31,8 +31,17 @@ import {
 } from "lucide-react";
 import { SKILL_CATEGORIES } from "@/data/skills";
 import { trackSpotlight } from "@/lib/spotlight";
+import CountUp from "@/components/CountUp";
+import SkillsMarquee from "@/components/SkillsMarquee";
 
 const luxEase = [0.16, 1, 0.3, 1] as const;
+
+// Two marquee rows drawn from the skill data, split roughly in half.
+const allSkills = SKILL_CATEGORIES.flatMap((category) => category.skills.map((skill) => skill.name));
+const marqueeRows = [
+  allSkills.slice(0, Math.ceil(allSkills.length / 2)),
+  allSkills.slice(Math.ceil(allSkills.length / 2)),
+];
 
 const ICONS: Record<string, LucideIcon> = {
   Atom,
@@ -84,7 +93,7 @@ export default function Skills() {
               <span className="lux-pill-dot" aria-hidden="true" />
               The toolkit
             </span>
-            <h2 className="display-title skills-title text-5xl sm:text-6xl lg:text-7xl">
+            <h2 data-split className="display-title skills-title text-5xl sm:text-6xl lg:text-7xl">
               Built for the whole <span className="lux-accent">picture.</span>
             </h2>
           </div>
@@ -98,8 +107,12 @@ export default function Skills() {
             </p>
           </div>
         </motion.div>
+      </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
+      <SkillsMarquee rows={marqueeRows} />
+
+      <div className="site-container relative">
+        <div className="grid gap-5 md:grid-cols-2">
           {SKILL_CATEGORIES.map((category, index) => {
             const featured = category.title === "AI Innovation";
 
@@ -153,7 +166,7 @@ export default function Skills() {
                               </p>
                             </div>
                           </div>
-                          <span className="skill-level">{skill.level}%</span>
+                          <CountUp value={skill.level} suffix="%" className="skill-level" />
                         </div>
                         {/* The track watches the viewport: the fill starts at zero width, which
                             intersection checks can miss, so it only follows the track's state. */}

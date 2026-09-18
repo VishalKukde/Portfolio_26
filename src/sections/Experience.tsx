@@ -69,7 +69,7 @@ export default function Experience() {
               <span className="lux-pill-dot" aria-hidden="true" />
               The path so far
             </span>
-            <h2 className="display-title exp-title text-5xl sm:text-6xl lg:text-7xl">
+            <h2 data-split className="display-title exp-title text-5xl sm:text-6xl lg:text-7xl">
               A track record of making things <span className="lux-accent">work.</span>
             </h2>
             <p className="body-copy mt-6 max-w-sm text-[0.98rem]">

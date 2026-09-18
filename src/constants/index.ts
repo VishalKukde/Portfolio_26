@@ -18,5 +18,8 @@ export const PREVIOUS_VERSIONS = [
 
 export const CONTACT_EMAIL = "vishalkukde19@gmail.com";
 
+// First day of professional experience; the hero counts years and months from here.
+export const CAREER_START = new Date(2023, 0, 2);
+
 // Switch to "v1" to restore the original terminal-style hero.
 export const HERO_VERSION: "v1" | "v2" = "v1";

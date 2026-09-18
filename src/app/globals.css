@@ -21,6 +21,7 @@
 }
 
 html {
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
   background: var(--paper);
   scrollbar-color: var(--lime) var(--ink);
@@ -60,6 +61,10 @@ html::-webkit-scrollbar-thumb:hover {
 
 html::-webkit-scrollbar-corner {
   background: var(--ink);
+}
+
+html.scroll-locked {
+  overflow: hidden;
 }
 
 body {
@@ -133,6 +138,15 @@ a {
   overflow: hidden;
   color: var(--paper);
   background: var(--ink);
+}
+
+/* Lime layer behind the splash; revealed as the dark curtain lifts, then lifts itself. */
+.loading-curtain-accent {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: var(--lime);
+  pointer-events: none;
 }
 
 .loading-screen-grid {
@@ -215,7 +229,7 @@ a {
   background-color: #ebe9e0;
 }
 
-.stack-main > section + section {
+.stack-main.stack-ready > section + section {
   box-shadow: 0 -18px 50px rgba(9, 20, 17, 0.14);
 }
 
@@ -1364,6 +1378,13 @@ textarea:focus-visible {
   background: #27362f;
 }
 
+/* Taller than its frame so it has room to drift for parallax. */
+.project-image-inner {
+  position: absolute;
+  inset: -10% 0;
+  will-change: transform;
+}
+
 .project-image::after {
   position: absolute;
   inset: 0;
@@ -1420,12 +1441,12 @@ textarea:focus-visible {
 }
 
 /* Card counter shown under the pinned stage on desktop. */
-/* Fixed to the bottom of the screen and shown only while the cards are pinned, so it never
+/* Fixed to the bottom-right of the screen and shown only while the cards are pinned, so it never
    lands off screen below a tall card. */
 .project-progress {
   position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
+  right: clamp(1rem, 3vw, 2.5rem);
+  bottom: 0.85rem;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -1438,7 +1459,7 @@ textarea:focus-visible {
   backdrop-filter: blur(12px);
   opacity: 0;
   pointer-events: none;
-  translate: -50% 12px;
+  translate: 0 12px;
   transition:
     opacity 400ms ease,
     translate 600ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -1446,7 +1467,7 @@ textarea:focus-visible {
 
 .project-progress.is-visible {
   opacity: 1;
-  translate: -50% 0;
+  translate: 0 0;
 }
 
 .project-progress-count {
@@ -2763,6 +2784,76 @@ textarea:focus-visible {
   }
 }
 
+/* ---------- Skills marquee ---------- */
+
+.skills-marquee {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  margin-block: clamp(2.5rem, 6vw, 4.5rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.skills-marquee-row {
+  overflow: hidden;
+}
+
+.skills-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.skills-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding-right: clamp(1rem, 2.4vw, 2rem);
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2.4rem, 6vw, 5.5rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.skills-marquee-item.is-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(20, 32, 29, 0.4);
+}
+
+.skills-marquee-star {
+  color: var(--coral);
+  font-size: 0.4em;
+  -webkit-text-stroke: 0;
+}
+
+.skills-marquee-row:nth-child(2) .skills-marquee-star {
+  color: #7fb81f;
+}
+
+/* ---------- Split heading reveals ---------- */
+
+/* Word masks get a little breathing room so descenders and italic overhangs aren't clipped. */
+.split-word-mask {
+  margin: 0 -0.08em -0.14em 0;
+  padding: 0 0.08em 0.14em 0;
+}
+
+/* The accent highlight draws in once the words have risen. */
+.split-ready .lux-accent::after {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+}
+
+.split-ready.is-revealed .lux-accent::after {
+  transform: scaleX(1);
+}
+
 /* ---------- Cursor ball ---------- */
 
 .cursor-ball {
@@ -2824,6 +2915,12 @@ textarea:focus-visible {
   background: var(--ball-soft);
   box-shadow: 0 0 24px var(--ball-glow);
   backdrop-filter: blur(1px);
+}
+
+/* Locked onto a round magnetic button, the ring wraps the button itself. */
+.cursor-ball.is-snapped .cursor-ball-dot {
+  width: var(--snap-size, 42px);
+  height: var(--snap-size, 42px);
 }
 
 .cursor-ball.is-pressed .cursor-ball-dot {

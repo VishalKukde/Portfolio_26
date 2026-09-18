@@ -83,15 +83,12 @@ export default function About() {
           </motion.div>
 
           <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1.1, ease: luxEase }}
+            <h2
+              data-split
               className="display-font max-w-4xl text-4xl font-medium leading-[0.98] tracking-[-0.075em] text-ink sm:text-6xl lg:text-7xl"
             >
               Engineering is a <span className="lux-accent">craft.</span> The interface is where people feel it.
-            </motion.h2>
+            </h2>
 
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -115,7 +112,7 @@ export default function About() {
               transition={{ duration: 0.9, delay: 0.25, ease: luxEase }}
               className="mt-9"
             >
-              <a href={`mailto:${CONTACT_EMAIL}`} className="lux-link">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="lux-link" data-magnetic="0.25">
                 Start a conversation
                 <span className="lux-link-icon" aria-hidden="true">
                   <ArrowUpRight size={14} strokeWidth={1.8} />

@@ -50,7 +50,7 @@ export default function Projects() {
               <span className="lux-pill-dot" aria-hidden="true" />
               Selected work
             </span>
-            <h2 className="display-font mt-6 max-w-3xl text-5xl font-medium leading-[0.92] tracking-[-0.08em] text-paper sm:text-7xl lg:text-8xl">
+            <h2 data-split className="display-font mt-6 max-w-3xl text-5xl font-medium leading-[0.92] tracking-[-0.08em] text-paper sm:text-7xl lg:text-8xl">
               Systems with a <span className="lux-accent">point of view.</span>
             </h2>
           </div>
@@ -95,6 +95,7 @@ export default function Projects() {
                         target="_blank"
                         rel="noreferrer"
                         className="project-live-button"
+                        data-magnetic="0.3"
                       >
                         Live project
                         <span className="project-live-icon" aria-hidden="true">
@@ -147,22 +148,29 @@ export default function Projects() {
                       </div>
                       <div
                         className="project-image"
-                        style={{
-                          backgroundImage: `url("${project.fallbackImage}")`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
+                        data-project-media
                       >
-                        <Image
-                          src={project.imageUrl}
-                          alt={`${project.name} project preview`}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 52vw"
-                          className="object-cover"
-                          onError={(event) => {
-                            event.currentTarget.style.opacity = "0";
+                        {/* Oversized inner layer that drifts for parallax; ProjectStack moves it. */}
+                        <div
+                          className="project-image-inner"
+                          data-project-parallax
+                          style={{
+                            backgroundImage: `url("${project.fallbackImage}")`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
                           }}
-                        />
+                        >
+                          <Image
+                            src={project.imageUrl}
+                            alt={`${project.name} project preview`}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 52vw"
+                            className="object-cover"
+                            onError={(event) => {
+                              event.currentTarget.style.opacity = "0";
+                            }}
+                          />
+                        </div>
                         <span className="project-image-label">
                           {project.restrictedOnMobile
                             ? "Best viewed on desktop"
@@ -188,6 +196,7 @@ export default function Projects() {
                         href="#contact"
                         onClick={(event) => scrollToSection(event, "#contact")}
                         className="lux-link projects-link"
+                        data-magnetic="0.25"
                       >
                         Build something similar
                         <span className="lux-link-icon" aria-hidden="true">
