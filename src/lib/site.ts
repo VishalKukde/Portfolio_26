@@ -16,7 +16,7 @@ export const SITE = {
   shortTitle: 'Vishal Kukde',
   jobTitle: 'Senior Full Stack Developer',
   description:
-    'Portfolio of Vishal Kukde, a senior full stack developer in India building fast, accessible web products with React, Next.js, Node.js and TypeScript. Open to remote work.',
+    "I'm Vishal Kukde, a senior full stack developer in India building fast, accessible web products with React, Next.js, Node.js and TypeScript. Open to remote work.",
   locale: 'en_US',
   location: 'India',
   email: CONTACT_EMAIL,

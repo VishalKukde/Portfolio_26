@@ -52,12 +52,26 @@ export default function OpenGraphImage() {
         />
 
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <svg width="72" height="72" viewBox="0 0 64 64">
-              <rect width="64" height="64" rx="15" fill={paper} fillOpacity="0.06" />
-              <path d="M7 15h7.4l4.6 21.4L23.7 15h7.4L22.9 49h-7.8L7 15Z" fill={lime} />
-              <path d="M33.4 15h6.8v13.2L47 15h7.6l-8.7 14.7L55.2 49h-7.7l-7.3-14.3V49h-6.8V15Z" fill={lime} />
-            </svg>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+            {/* The site icon as a raised tile, so it reads as the logo against the dark card. */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 104,
+                height: 104,
+                borderRadius: 26,
+                border: `2px solid ${lime}59`,
+                background: 'linear-gradient(160deg, #2a3d36, #16241f)',
+                boxShadow: `0 0 0 8px ${lime}14, 0 24px 48px rgba(0, 0, 0, 0.45)`,
+              }}
+            >
+              <svg width="78" height="78" viewBox="0 0 64 64">
+                <path d="M7 15h7.4l4.6 21.4L23.7 15h7.4L22.9 49h-7.8L7 15Z" fill={lime} />
+                <path d="M33.4 15h6.8v13.2L47 15h7.6l-8.7 14.7L55.2 49h-7.7l-7.3-14.3V49h-6.8V15Z" fill={lime} />
+              </svg>
+            </div>
             <div
               style={{
                 display: 'flex',

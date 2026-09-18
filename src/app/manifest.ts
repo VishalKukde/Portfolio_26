@@ -2,7 +2,8 @@ import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/site';
 
 // Served as /manifest.webmanifest: name, colors and icons used when the site is saved to a
-// home screen or shown by the browser as an app.
+// home screen. `display: "standalone"` makes it installable, so browsers (notably Android
+// Chrome) may offer an "Install app" prompt; installed, it opens without the browser bar.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: SITE.title,
