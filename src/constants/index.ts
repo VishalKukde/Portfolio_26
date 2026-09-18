@@ -18,6 +18,13 @@ export const PREVIOUS_VERSIONS = [
 
 export const CONTACT_EMAIL = "vishalkukde19@gmail.com";
 
+// Served from /public. Replace the file (keep the name) to update the resume everywhere.
+export const RESUME_URL = "/Vishal-Kukde-Resume.pdf";
+
+// Resume switch: false shows a "coming soon" message (no preview, no download button).
+// Put the real PDF at public/Vishal-Kukde-Resume.pdf, then set this to true.
+export const RESUME_AVAILABLE = false;
+
 // First day of professional experience; the hero counts years and months from here.
 export const CAREER_START = new Date(2023, 0, 2);
 

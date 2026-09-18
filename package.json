@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "copy-pdf-worker": "node -e \"require('fs').copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs','public/pdf.worker.min.mjs')\"",
+    "predev": "npm run copy-pdf-worker",
     "dev": "next dev",
+    "prebuild": "npm run copy-pdf-worker",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,6 +17,7 @@
     "lenis": "^1.1.16",
     "lucide-react": "^0.468.0",
     "next": "^14.2.15",
+    "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

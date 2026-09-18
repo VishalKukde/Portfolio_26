@@ -9,7 +9,8 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import { ArrowUpRight, Code2 } from "lucide-react";
+import { ArrowUpRight, Code2, Download } from "lucide-react";
+import { openResumeModal } from "@/lib/resume";
 import { scrollToSection } from "@/lib/scroll";
 import { LOADING_DURATION } from "@/components/LoadingScreen";
 import CountUp from "@/components/CountUp";
@@ -141,28 +142,31 @@ export default function Hero() {
     const media = gsap.matchMedia(section);
 
     // Desktop and tablet only; phones skip this heavier scroll effect.
-    media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-      const timeline = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          endTrigger: "#about",
-          end: "top top",
-          scrub: 0.6,
-        },
-      });
+    media.add(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const timeline = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            endTrigger: "#about",
+            end: "top top",
+            scrub: 0.6,
+          },
+        });
 
-      timeline
-        .to("[data-hero-layer=ambient]", { yPercent: 18 }, 0)
-        .to("[data-hero-layer=mark]", { yPercent: -30 }, 0)
-        .to("[data-hero-layer=copy]", { yPercent: -12, autoAlpha: 0.35 }, 0)
-        .to(
-          "[data-hero-layer=card]",
-          { yPercent: -22, scale: 0.9, autoAlpha: 0.5 },
-          0,
-        );
-    });
+        timeline
+          .to("[data-hero-layer=ambient]", { yPercent: 18 }, 0)
+          .to("[data-hero-layer=mark]", { yPercent: -30 }, 0)
+          .to("[data-hero-layer=copy]", { yPercent: -12, autoAlpha: 0.35 }, 0)
+          .to(
+            "[data-hero-layer=card]",
+            { yPercent: -22, scale: 0.9, autoAlpha: 0.5 },
+            0,
+          );
+      },
+    );
 
     return () => media.revert();
   }, []);
@@ -271,6 +275,17 @@ export default function Hero() {
                 <ArrowUpRight size={17} strokeWidth={1.8} />
               </span>
             </a>
+            <button
+              type="button"
+              onClick={openResumeModal}
+              className="lux-link"
+              data-magnetic="0.25"
+            >
+              Download resume
+              <span className="lux-link-icon" aria-hidden="true">
+                <Download size={14} strokeWidth={1.8} />
+              </span>
+            </button>
           </motion.div>
 
           <motion.div

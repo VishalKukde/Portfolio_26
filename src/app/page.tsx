@@ -12,6 +12,7 @@ import SectionStack from '@/components/SectionStack';
 import CursorBall from '@/components/CursorBall';
 import MagneticEffects from '@/components/MagneticEffects';
 import SplitHeadings from '@/components/SplitHeadings';
+import ResumeModal from '@/components/ResumeModal';
 import PageTimeline from '@/components/PageTimeline';
 import HeroV2 from '@/sections/HeroV2';
 import { HERO_VERSION } from '@/constants';
@@ -23,6 +24,7 @@ export default function Home() {
       <CursorBall />
       <MagneticEffects />
       <SplitHeadings />
+      <ResumeModal />
       <Background />
       <div className="content-layer">
         <Navbar />

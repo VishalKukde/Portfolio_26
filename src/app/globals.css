@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,7 +10,7 @@
   --lime: #c8f169;
   --coral: #ff765f;
   --teal: #8ce5d1;
-  --moss: #64776c;
+  --moss: #56695e;
   --line: rgba(20, 32, 29, 0.18);
 }
 
@@ -28,16 +27,25 @@ html {
   scrollbar-width: thin;
 }
 
-html::-webkit-scrollbar {
+/* Scroll areas inside the page (e.g. the resume preview) share the page scrollbar exactly. */
+.lux-scrollbar {
+  scrollbar-color: var(--lime) var(--ink);
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar,
+.lux-scrollbar::-webkit-scrollbar {
   width: 15px;
 }
 
-html::-webkit-scrollbar-track {
+html::-webkit-scrollbar-track,
+.lux-scrollbar::-webkit-scrollbar-track {
   background: var(--ink);
   border-left: 1px solid rgba(241, 238, 230, 0.16);
 }
 
-html::-webkit-scrollbar-thumb {
+html::-webkit-scrollbar-thumb,
+.lux-scrollbar::-webkit-scrollbar-thumb {
   min-height: 5rem;
   border: 4px solid var(--ink);
   border-radius: 999px;
@@ -50,7 +58,8 @@ html::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 0 1px rgba(20, 32, 29, 0.3);
 }
 
-html::-webkit-scrollbar-thumb:hover {
+html::-webkit-scrollbar-thumb:hover,
+.lux-scrollbar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     to bottom,
     var(--teal) 0 21%,
@@ -59,7 +68,8 @@ html::-webkit-scrollbar-thumb:hover {
   );
 }
 
-html::-webkit-scrollbar-corner {
+html::-webkit-scrollbar-corner,
+.lux-scrollbar::-webkit-scrollbar-corner {
   background: var(--ink);
 }
 
@@ -71,7 +81,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--paper);
-  font-family: "Manrope", "Avenir Next", sans-serif;
+  font-family: var(--font-body), "Avenir Next", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -193,7 +203,7 @@ a {
 .loading-percent {
   min-width: 3.2ch;
   color: var(--lime);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.08em;
@@ -274,11 +284,11 @@ a {
 }
 
 .display-font {
-  font-family: "Space Grotesk", "Avenir Next", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
 }
 
 .mono-font {
-  font-family: "DM Mono", "SFMono-Regular", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
 }
 
 .kicker {
@@ -286,7 +296,7 @@ a {
   align-items: center;
   gap: 0.65rem;
   color: var(--moss);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.66rem;
   letter-spacing: 0.13em;
   line-height: 1.3;
@@ -305,7 +315,7 @@ a {
   margin: 1.15rem 0 0;
   max-width: 900px;
   color: var(--ink);
-  font-family: "Space Grotesk", "Avenir Next", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: clamp(3rem, 8vw, 7.4rem);
   font-weight: 600;
   letter-spacing: -0.09em;
@@ -332,7 +342,7 @@ a {
   min-height: 3.2rem;
   padding: 0.75rem 1.1rem;
   border: 1px solid var(--ink);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -504,7 +514,7 @@ textarea:focus-visible {
   right: -0.06em;
   bottom: -0.22em;
   color: transparent;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: clamp(15rem, 42vw, 38rem);
   font-weight: 700;
   letter-spacing: -0.16em;
@@ -528,7 +538,7 @@ textarea:focus-visible {
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 8px 24px -14px rgba(20, 32, 29, 0.35);
   backdrop-filter: blur(10px);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.64rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -598,7 +608,7 @@ textarea:focus-visible {
   display: inline-block;
   padding-right: 0.04em;
   color: var(--ink);
-  font-family: "Instrument Serif", "Times New Roman", serif;
+  font-family: var(--font-serif), "Times New Roman", serif;
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.035em;
@@ -632,7 +642,7 @@ textarea:focus-visible {
   box-shadow:
     inset 0 1px 0 rgba(241, 238, 230, 0.14),
     0 18px 36px -18px rgba(20, 32, 29, 0.7);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -708,7 +718,7 @@ textarea:focus-visible {
 
 .hero-stat-value {
   color: var(--ink);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: clamp(1.9rem, 3vw, 2.5rem);
   font-weight: 500;
   letter-spacing: -0.06em;
@@ -717,7 +727,7 @@ textarea:focus-visible {
 
 .hero-stat-label {
   color: var(--moss);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -805,8 +815,8 @@ textarea:focus-visible {
 .hero-card-footer {
   padding-top: 1rem;
   border-top: 1px solid rgba(241, 238, 230, 0.1);
-  color: rgba(241, 238, 230, 0.5);
-  font-family: "DM Mono", monospace;
+  color: rgba(241, 238, 230, 0.62);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -841,7 +851,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: var(--lime);
   background: rgba(200, 241, 105, 0.08);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.56rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -916,7 +926,7 @@ textarea:focus-visible {
   align-items: center;
   gap: 1.25rem;
   color: var(--moss);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -978,7 +988,7 @@ textarea:focus-visible {
   border: 1px solid var(--coral);
   border-radius: 50%;
   color: var(--coral);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: -0.12em;
@@ -1039,13 +1049,13 @@ textarea:focus-visible {
 .console-line {
   display: grid;
   grid-template-columns: 1.5rem 1fr;
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.7rem;
   line-height: 2;
 }
 
 .console-line > span:first-child {
-  color: rgba(241, 238, 230, 0.34);
+  color: rgba(241, 238, 230, 0.5);
   user-select: none;
 }
 
@@ -1117,7 +1127,7 @@ textarea:focus-visible {
   align-items: flex-start;
   gap: 0.9rem;
   color: rgba(241, 238, 230, 0.55);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.64rem;
   letter-spacing: 0.08em;
   line-height: 1.8;
@@ -1202,7 +1212,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: var(--ink);
   background: rgb(var(--accent));
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
   letter-spacing: 0.08em;
 }
@@ -1216,7 +1226,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: rgba(241, 238, 230, 0.6);
   background: rgba(241, 238, 230, 0.04);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1237,7 +1247,7 @@ textarea:focus-visible {
   color: var(--ink);
   background: var(--lime);
   box-shadow: 0 10px 24px -12px rgba(200, 241, 105, 0.55);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.6rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1283,7 +1293,7 @@ textarea:focus-visible {
 
 .project-highlights-label {
   color: rgb(var(--accent));
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.56rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1314,7 +1324,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: rgba(241, 238, 230, 0.65);
   background: rgba(241, 238, 230, 0.03);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   transition:
     border-color 300ms ease,
@@ -1361,9 +1371,9 @@ textarea:focus-visible {
   overflow: hidden;
   padding: 0.25rem 0.7rem;
   border-radius: 999px;
-  color: rgba(241, 238, 230, 0.45);
+  color: rgba(241, 238, 230, 0.6);
   background: rgba(241, 238, 230, 0.05);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   text-align: center;
   text-overflow: ellipsis;
@@ -1417,7 +1427,7 @@ textarea:focus-visible {
   color: rgba(241, 238, 230, 0.85);
   background: rgba(12, 21, 18, 0.45);
   backdrop-filter: blur(8px);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.55rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1472,14 +1482,14 @@ textarea:focus-visible {
 
 .project-progress-count {
   color: var(--paper);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.08em;
 }
 
 .project-progress-count > span {
-  color: rgba(241, 238, 230, 0.4);
+  color: rgba(241, 238, 230, 0.6);
 }
 
 .project-progress-track {
@@ -1532,6 +1542,7 @@ textarea:focus-visible {
 
 .lux-link {
   display: inline-flex;
+  cursor: pointer;
   align-items: center;
   gap: 0.85rem;
   padding: 0.35rem 0.35rem 0.35rem 1.1rem;
@@ -1541,7 +1552,7 @@ textarea:focus-visible {
   background: rgba(255, 255, 255, 0.45);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 12px 26px -18px rgba(20, 32, 29, 0.4);
   backdrop-filter: blur(10px);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.64rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1614,7 +1625,7 @@ textarea:focus-visible {
   padding: 0.7rem 0;
   border-bottom: 1px solid rgba(20, 32, 29, 0.07);
   color: var(--ink);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -1642,7 +1653,7 @@ textarea:focus-visible {
 
 .about-principle-number {
   color: var(--coral);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
 }
@@ -1712,6 +1723,50 @@ textarea:focus-visible {
   --accent: 255, 118, 95;
 }
 
+/* GSAP drives the tilt, so only the shadow keeps a CSS transition (a transform transition
+   would add lag on top of GSAP's own easing). */
+.lux-card.skill-category-card {
+  transition: box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* The shared card hover lift would jump in before GSAP's tilt starts; the tilt handles lift. */
+.lux-card.skill-category-card:hover {
+  transform: none;
+}
+
+/* Oversized outline number set into the card, drifting at its own speed on scroll. */
+.skill-card-watermark {
+  position: absolute;
+  right: -0.04em;
+  bottom: -0.3em;
+  z-index: 0;
+  color: transparent;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
+  font-size: clamp(8rem, 15vw, 14rem);
+  font-weight: 600;
+  letter-spacing: -0.08em;
+  line-height: 1;
+  pointer-events: none;
+  -webkit-text-stroke: 1.5px rgba(var(--accent), 0.55);
+  will-change: transform;
+}
+
+/* Soft accent glow in the top corner, drifting against the number. */
+.skill-card-orb {
+  position: absolute;
+  top: -35%;
+  right: -15%;
+  z-index: 0;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent), 0.4), transparent 65%);
+  filter: blur(20px);
+  pointer-events: none;
+  will-change: transform;
+}
+
 .skill-category-index {
   display: grid;
   width: 2.6rem;
@@ -1722,7 +1777,7 @@ textarea:focus-visible {
   color: var(--ink);
   background: rgba(var(--accent), 0.55);
   box-shadow: 0 0 0 6px rgba(var(--accent), 0.16);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
 }
 
@@ -1734,7 +1789,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: var(--moss);
   background: rgba(241, 238, 230, 0.7);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.55rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1764,27 +1819,45 @@ textarea:focus-visible {
   transform: rotate(-8deg) scale(1.08);
 }
 
-.skill-level {
+/* Tier label with a three-step meter underneath (Proficient / Advanced / Expert). */
+.skill-tier {
+  display: flex;
   flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  padding-top: 0.15rem;
+}
+
+.skill-tier-label {
+  color: var(--ink);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.skill-tier[data-tier="1"] .skill-tier-label {
   color: var(--moss);
-  font-family: "DM Mono", monospace;
-  font-size: 0.6rem;
-  font-variant-numeric: tabular-nums;
 }
 
-.skill-level-track {
+.skill-tier-meter {
+  display: flex;
+  gap: 3px;
+}
+
+.skill-tier-step {
+  display: block;
+  width: 0.9rem;
   height: 4px;
-  margin-top: 0.75rem;
-  overflow: hidden;
   border-radius: 999px;
-  background: rgba(20, 32, 29, 0.07);
+  background: rgba(20, 32, 29, 0.1);
+  transform-origin: left center;
 }
 
-.skill-level-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, rgba(var(--accent), 0.7), rgb(var(--accent)));
-  transform-origin: left center;
+.skill-tier-step.is-filled {
+  background: rgb(var(--accent));
+  box-shadow: 0 0 8px rgba(var(--accent), 0.5);
 }
 
 /* ---------- Experience ---------- */
@@ -1963,7 +2036,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: var(--moss);
   background: rgba(241, 238, 230, 0.7);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2025,7 +2098,7 @@ textarea:focus-visible {
 .exp-highlight-index {
   padding-top: 0.2rem;
   color: var(--coral);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
   letter-spacing: 0.08em;
 }
@@ -2213,7 +2286,7 @@ textarea:focus-visible {
 .nav-link {
   position: relative;
   color: var(--moss);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.66rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2345,7 +2418,7 @@ textarea:focus-visible {
   padding-right: 0.75rem;
   overflow: hidden;
   color: var(--ink);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-overflow: ellipsis;
@@ -2422,7 +2495,7 @@ textarea:focus-visible {
 
 .contact-label {
   color: rgba(20, 32, 29, 0.62);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.6rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2450,7 +2523,7 @@ textarea:focus-visible {
   color: var(--ink);
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2507,7 +2580,7 @@ textarea:focus-visible {
 
 .footer-brand {
   color: var(--paper);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: 2.25rem;
   font-weight: 500;
   letter-spacing: -0.08em;
@@ -2515,8 +2588,8 @@ textarea:focus-visible {
 }
 
 .footer-heading {
-  color: rgba(241, 238, 230, 0.4);
-  font-family: "DM Mono", monospace;
+  color: rgba(241, 238, 230, 0.6);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.6rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -2592,7 +2665,7 @@ textarea:focus-visible {
   border-radius: 999px;
   color: rgba(241, 238, 230, 0.7);
   background: rgba(241, 238, 230, 0.04);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.6rem;
   letter-spacing: 0.04em;
   transition:
@@ -2642,8 +2715,8 @@ textarea:focus-visible {
   margin-top: 3.5rem;
   padding: 1.25rem 0;
   border-top: 1px solid rgba(241, 238, 230, 0.1);
-  color: rgba(241, 238, 230, 0.4);
-  font-family: "DM Mono", monospace;
+  color: rgba(241, 238, 230, 0.6);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2692,7 +2765,7 @@ textarea:focus-visible {
   display: inline-block;
   margin-bottom: -0.17em;
   color: rgba(241, 238, 230, 0.14);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: 15vw;
   font-weight: 600;
   letter-spacing: -0.06em;
@@ -2812,7 +2885,7 @@ textarea:focus-visible {
   gap: clamp(1rem, 2.4vw, 2rem);
   padding-right: clamp(1rem, 2.4vw, 2rem);
   color: var(--ink);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
   font-size: clamp(2.4rem, 6vw, 5.5rem);
   font-weight: 500;
   letter-spacing: -0.06em;
@@ -2852,6 +2925,276 @@ textarea:focus-visible {
 
 .split-ready.is-revealed .lux-accent::after {
   transform: scaleX(1);
+}
+
+/* ---------- Resume modal ---------- */
+
+.resume-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(12, 21, 18, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.resume-modal {
+  position: relative;
+  display: flex;
+  width: min(100%, 52rem);
+  height: min(88vh, 60rem);
+  height: min(88svh, 60rem);
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 1.75rem;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(200, 241, 105, 0.3), transparent 40%),
+    linear-gradient(160deg, #fbfaf6, var(--paper));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 50px 100px -40px rgba(0, 0, 0, 0.6);
+}
+
+/* Without a preview the dialog sizes to its content. */
+.resume-modal.is-compact {
+  width: min(100%, 30rem);
+  height: auto;
+}
+
+.resume-modal-soon {
+  padding: 0.5rem 0 0.25rem;
+}
+
+.resume-modal-soon-title {
+  margin: 0;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
+  font-size: clamp(2.4rem, 7vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.resume-modal-soon-text {
+  margin-top: 0.9rem;
+  color: rgba(20, 32, 29, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.resume-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.resume-modal-icon {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  place-items: center;
+  border-radius: 0.8rem;
+  color: var(--ink);
+  background: var(--lime);
+}
+
+.resume-modal-kicker {
+  display: block;
+  color: var(--moss);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.resume-modal-title {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display), "Avenir Next", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.resume-modal-close {
+  display: grid;
+  width: 2.3rem;
+  height: 2.3rem;
+  flex: none;
+  margin-left: auto;
+  place-items: center;
+  border: 1px solid rgba(20, 32, 29, 0.12);
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition:
+    background-color 300ms ease,
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.resume-modal-close:hover,
+.resume-modal-close:focus-visible {
+  background: var(--lime);
+  transform: rotate(90deg);
+}
+
+/* The PDF sits in a framed, rounded viewer that fills the space between header and buttons. */
+.resume-modal-preview {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(20, 32, 29, 0.1);
+  border-radius: 1.1rem;
+  background: #e9e6dd;
+  box-shadow: inset 0 1px 3px rgba(20, 32, 29, 0.08);
+}
+
+/* PDF pages rendered as canvases in a scroll area styled like the page scrollbar. */
+.pdf-viewer {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.pdf-viewer-pages {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+
+.pdf-viewer-page {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 10px 30px -18px rgba(20, 32, 29, 0.45);
+}
+
+.pdf-viewer-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  color: var(--moss);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+.resume-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resume-modal-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.05rem;
+  border: 1px solid rgba(20, 32, 29, 0.14);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.resume-modal-action:hover,
+.resume-modal-action:focus-visible {
+  border-color: var(--ink);
+  background: var(--lime);
+  transform: translateY(-2px);
+}
+
+.resume-modal-action.is-primary {
+  border-color: var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.resume-modal-action.is-primary:hover,
+.resume-modal-action.is-primary:focus-visible {
+  color: var(--ink);
+  background: var(--lime);
+}
+
+.resume-modal-close:focus-visible,
+.resume-modal-action:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+
+/* Footer resume button, sized to sit in the row of round social buttons. */
+.footer-resume {
+  display: inline-flex;
+  height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.1rem;
+  border: 1px solid rgba(241, 238, 230, 0.16);
+  border-radius: 999px;
+  color: var(--paper);
+  background: rgba(241, 238, 230, 0.05);
+  cursor: pointer;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition:
+    color 400ms ease,
+    border-color 400ms ease,
+    background-color 400ms ease;
+}
+
+.footer-resume:hover,
+.footer-resume:focus-visible {
+  border-color: var(--lime);
+  color: var(--ink);
+  background: var(--lime);
+}
+
+.footer-resume:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 4px;
+}
+
+/* ---------- 404 page ---------- */
+
+.not-found {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  overflow: hidden;
+  padding-block: 6rem;
+  background: var(--paper);
+}
+
+.not-found-title {
+  max-width: 14ch;
+  margin-top: 1.5rem;
+  font-size: clamp(3.2rem, 9vw, 7.5rem);
+  letter-spacing: -0.075em;
 }
 
 /* ---------- Cursor ball ---------- */

@@ -91,10 +91,10 @@ export default function HeroV2() {
                     transition={{ duration: 0.55, delay: 0.65 + index * 0.16 }}
                     className={`hero-v2-layer hero-v2-layer-${layer.tone}`}
                   >
-                    <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-paper/45">0{index + 1}</span>
+                    <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-paper/60">0{index + 1}</span>
                     <div>
                       <p className="display-font text-2xl font-medium tracking-[-0.07em] text-paper">{layer.label}</p>
-                      <p className="mono-font mt-1 text-[0.58rem] uppercase tracking-[0.09em] text-paper/45">{layer.detail}</p>
+                      <p className="mono-font mt-1 text-[0.58rem] uppercase tracking-[0.09em] text-paper/60">{layer.detail}</p>
                     </div>
                     <Layers3 size={18} strokeWidth={1.2} className="ml-auto text-paper/55" />
                   </motion.div>
@@ -105,7 +105,7 @@ export default function HeroV2() {
 
             <div className="flex items-end justify-between gap-5 border-t border-paper/20 pt-5">
               <div>
-                <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-paper/40">Working principle</span>
+                <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-paper/60">Working principle</span>
                 <p className="display-font mt-2 max-w-xs text-xl leading-tight tracking-[-0.06em] text-paper">Make the hard parts feel simple.</p>
               </div>
               <MoveRight size={20} className="text-coral" strokeWidth={1.5} />

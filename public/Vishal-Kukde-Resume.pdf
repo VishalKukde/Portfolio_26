@@ -1,0 +1,46 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 995 >>
+stream
+0.784 0.945 0.412 rg 0 812 595 30 re f
+BT /F2 30 Tf 0.078 0.125 0.114 rg 56 770 Td (Vishal Kukde) Tj ET
+BT /F1 14 Tf 0.078 0.125 0.114 rg 56 745 Td (Senior Full Stack Developer) Tj ET
+BT /F1 10 Tf 0.078 0.125 0.114 rg 56 725 Td (vishalkukde19@gmail.com  |  github.com/vishalkukde  |  linkedin.com/in/vishalkukde) Tj ET
+BT /F2 12 Tf 0.078 0.125 0.114 rg 56 680 Td (PLACEHOLDER RESUME) Tj ET
+BT /F1 11 Tf 0.078 0.125 0.114 rg 56 660 Td (This is a sample document used to preview the resume download on the portfolio.) Tj ET
+BT /F1 11 Tf 0.078 0.125 0.114 rg 56 644 Td (The full, up-to-date resume will replace this file soon.) Tj ET
+BT /F2 12 Tf 0.078 0.125 0.114 rg 56 600 Td (EXPERIENCE) Tj ET
+BT /F1 11 Tf 0.078 0.125 0.114 rg 56 580 Td (Software Developer - PoketPOS Solutions Pvt. Ltd  \(2023 - present\)) Tj ET
+BT /F2 12 Tf 0.078 0.125 0.114 rg 56 540 Td (CORE STACK) Tj ET
+BT /F1 11 Tf 0.078 0.125 0.114 rg 56 520 Td (React, Next.js, TypeScript, Node.js, Express, MongoDB, PostgreSQL) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000001297 00000 n 
+0000001367 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1442
+%%EOF

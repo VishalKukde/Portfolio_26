@@ -15,7 +15,7 @@ const config: Config = {
         lime: '#c8f169',
         coral: '#ff765f',
         mist: '#d9ded5',
-        moss: '#64776c',
+        moss: '#56695e',
       },
       boxShadow: {
         ink: '0 24px 80px rgba(9, 20, 17, 0.18)',

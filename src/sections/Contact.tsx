@@ -159,7 +159,7 @@ export default function Contact() {
                         <Send size={16} strokeWidth={1.7} />
                       </span>
                     </button>
-                    <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-ink/50">Opens in your mail app</span>
+                    <span className="mono-font text-[0.58rem] uppercase tracking-[0.12em] text-ink/65">Opens in your mail app</span>
                   </div>
                 </motion.form>
               )}

@@ -13,6 +13,14 @@ export interface SkillCategory {
   skills: Skill[];
 }
 
+// The site shows a tier rather than the raw number, which reads as more credible than a
+// self-rated percentage. `level` stays in the data so the tiers can be retuned in one place.
+export function skillTier(level: number) {
+  if (level >= 95) return { label: 'Expert', rank: 3 } as const;
+  if (level >= 90) return { label: 'Advanced', rank: 2 } as const;
+  return { label: 'Proficient', rank: 1 } as const;
+}
+
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     index: '01',

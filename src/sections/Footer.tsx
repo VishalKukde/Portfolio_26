@@ -2,7 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, ArrowUpRight, Github, Linkedin, Twitter } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  Download,
+  Github,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
+import { openResumeModal } from "@/lib/resume";
 import {
   CONTACT_EMAIL,
   NAV_LINKS,
@@ -163,6 +171,15 @@ export default function Footer() {
                   <SocialIcon label={social.label} />
                 </a>
               ))}
+              <button
+                type="button"
+                onClick={openResumeModal}
+                className="footer-resume"
+                data-magnetic="0.3"
+              >
+                <Download size={14} strokeWidth={1.8} aria-hidden="true" />
+                Resume
+              </button>
             </div>
           </div>
 
@@ -214,7 +231,7 @@ export default function Footer() {
               ))}
             </div>
 
-            <p className="mt-8 mono-font text-[0.6rem] uppercase tracking-[0.1em] text-paper/35">
+            <p className="mt-8 mono-font text-[0.6rem] uppercase tracking-[0.1em] text-paper/55">
               Built with Next.js / Love / Care
             </p>
           </div>

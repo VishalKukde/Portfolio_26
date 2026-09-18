@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>VK portfolio mark</title>
-  <rect width="64" height="64" rx="16" fill="#14201d" />
-  <rect x="2.5" y="2.5" width="59" height="59" rx="13.5" fill="none" stroke="#c8f169" stroke-width="1.5" opacity=".55" />
-  <g transform="translate(1.4 1.4)" fill="#ff765f" opacity=".32">
-    <path d="M7 15h7l4.8 21.5L24.8 15h7L23.7 49h-7.1L7 15Z" />
-    <path d="M33 15h6.4v13.5L46.6 15h7.2l-8.8 15L54.8 49h-7.2l-8.2-14.6V49H33V15Z" />
-  </g>
-  <path d="M7 15h7l4.8 21.5L24.8 15h7L23.7 49h-7.1L7 15Z" fill="#c8f169" />
-  <path d="M33 15h6.4v13.5L46.6 15h7.2l-8.8 15L54.8 49h-7.2l-8.2-14.6V49H33V15Z" fill="#f1eee6" />
-  <circle cx="58" cy="46" r="1.8" fill="#ff765f" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Vishal Kukde</title>
+  <rect width="64" height="64" rx="15" fill="#14201d" />
+  <path d="M7 15h7.4l4.6 21.4L23.7 15h7.4L22.9 49h-7.8L7 15Z" fill="#c8f169" />
+  <path d="M33.4 15h6.8v13.2L47 15h7.6l-8.7 14.7L55.2 49h-7.7l-7.3-14.3V49h-6.8V15Z" fill="#c8f169" />
 </svg>

@@ -4,3 +4,7 @@ out
 .DS_Store
 *.log
 .env*
+!.env.example
+
+# Copied from pdfjs-dist by "npm run copy-pdf-worker" (runs before dev and build)
+public/pdf.worker.min.mjs
