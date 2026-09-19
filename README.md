@@ -1,4 +1,4 @@
-<h1 align="center">Vishal Kukde S</h1>
+<h1 align="center">Vishal Kukde</h1>
 
 <p align="center">
   <strong>Senior Full Stack Developer</strong><br />
