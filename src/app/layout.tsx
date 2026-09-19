@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { DM_Mono, Instrument_Serif, Manrope, Space_Grotesk } from 'next/font/google';
 import SmoothScroll from '@/components/SmoothScroll';
 import { EXPERIENCE } from '@/data/experience';
+import { LITE_MODE_SCRIPT } from '@/lib/lite-mode';
 import { SITE, SITE_URL } from '@/lib/site';
 import './globals.css';
 
@@ -88,7 +89,16 @@ const structuredData = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${body.variable} ${display.variable} ${mono.variable} ${serif.variable}`}>
+    // The inline script adds the lite-mode class before first paint, which is why <html> ignores
+    // the class mismatch during hydration.
+    <html
+      lang="en"
+      className={`${body.variable} ${display.variable} ${mono.variable} ${serif.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: LITE_MODE_SCRIPT }} />
+      </head>
       <body>
         <script
           type="application/ld+json"

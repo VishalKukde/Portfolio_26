@@ -1,5 +1,6 @@
 import Background from '@/components/Background';
 import LoadingScreen from '@/components/LoadingScreen';
+import ModeCurtain from '@/components/ModeCurtain';
 import About from '@/sections/About';
 import Contact from '@/sections/Contact';
 import Experience from '@/sections/Experience';
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <>
       <LoadingScreen />
+      <ModeCurtain />
       <CursorBall />
       <MagneticEffects />
       <SplitHeadings />

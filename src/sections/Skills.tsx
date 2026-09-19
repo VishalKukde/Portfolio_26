@@ -3,6 +3,7 @@
 import { useEffect, useRef, type PointerEvent } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
+import { isLiteMode } from "@/lib/lite-mode";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Atom,
@@ -81,7 +82,7 @@ const DEPTH_QUERY =
 // Hover tilt: the card leans toward the pointer and lifts slightly (mouse, desktop and tablet).
 const tiltCard = (event: PointerEvent<HTMLElement>) => {
   trackSpotlight(event);
-  if (event.pointerType !== "mouse" || !window.matchMedia(DEPTH_QUERY).matches)
+  if (event.pointerType !== "mouse" || isLiteMode() || !window.matchMedia(DEPTH_QUERY).matches)
     return;
   const rect = event.currentTarget.getBoundingClientRect();
   const x = (event.clientX - rect.left) / rect.width;
@@ -113,7 +114,7 @@ export default function Skills() {
 
   useEffect(() => {
     const grid = gridRef.current;
-    if (!grid) return undefined;
+    if (!grid || isLiteMode()) return undefined;
 
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia(grid);

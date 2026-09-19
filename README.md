@@ -42,11 +42,20 @@ My home base is React, Next.js, Node.js, and TypeScript. I've used them to build
 
 ## Experience
 
+### Sr. Full Stack Developer · Royal Chains Limited
+
+**Sep 2026 – present · On-site**
+
+Just joined Royal Chains Limited as a Senior Full Stack Developer. Right now I'm getting to know the product, the codebase and the team, and settling in to own features from the interface to the data layer.
+
+- Onboarding onto the product, its architecture and the team's ways of working.
+- Picking up full stack work across the frontend and backend.
+
 ### Software Developer · PoketPOS Solutions Pvt. Ltd.
 
-**2023 – present · On-site**
+**Jan 2023 – Sep 2026 · On-site**
 
-Leading frontend architecture for SaaS products where performance, accessibility, and a shared language matter as much as the feature list.
+Led frontend architecture for SaaS products where performance, accessibility, and a shared language matter as much as the feature list.
 
 - Developed a full-featured Java-based web portal for real-time sales, purchase, and transaction reporting across the organization.
 - Engineered a cross-platform desktop application using Electron and React to streamline restaurant order placement and settlement.

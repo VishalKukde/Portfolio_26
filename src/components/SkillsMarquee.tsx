@@ -12,7 +12,8 @@ const BASE_SPEED = 40; // px per second
 const MAX_SKEW = 8;
 
 // Endless rows of skill names. They drift on their own, speed up with scroll velocity, and lean
-// slightly in the scroll direction; alternate rows travel the opposite way.
+// slightly in the scroll direction; alternate rows travel the opposite way. It stays on in lite
+// mode, where there is no Lenis velocity, so the rows simply drift at their base speed.
 export default function SkillsMarquee({ rows }: SkillsMarqueeProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 

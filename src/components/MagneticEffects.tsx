@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import gsap from "gsap";
+import { prefersReducedMotion } from "@/lib/lite-mode";
 
 const PULL = 0.3;
 
@@ -11,7 +12,7 @@ const PULL = 0.3;
 export default function MagneticEffects() {
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = prefersReducedMotion();
     if (!fine || reduce) return undefined;
 
     const movers = new WeakMap<HTMLElement, { x: gsap.QuickToFunc; y: gsap.QuickToFunc }>();

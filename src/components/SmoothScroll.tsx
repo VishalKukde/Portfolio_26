@@ -4,7 +4,15 @@ import { ReactNode, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { MotionGlobalConfig } from 'framer-motion';
 import { setLenis } from '@/lib/lenis';
+import { isLiteMode, prefersReducedMotion } from '@/lib/lite-mode';
+
+// In lite mode every Framer animation jumps straight to its end state. This runs when the module
+// loads, before any motion component mounts, so the hero entrance never waits on the splash.
+if (isLiteMode()) {
+  MotionGlobalConfig.skipAnimations = true;
+}
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -21,9 +29,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       }
     }
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (reduceMotion) {
+    if (prefersReducedMotion()) {
       return undefined;
     }
 

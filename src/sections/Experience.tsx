@@ -16,6 +16,7 @@ export default function Experience() {
   const headRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
+  // The scroll-drawn timeline rail stays on in lite mode; it is a single light scroll effect.
   useEffect(() => {
     if (!sectionRef.current || !lineRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return undefined;

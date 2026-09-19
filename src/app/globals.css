@@ -2772,8 +2772,11 @@ textarea:focus-visible {
   line-height: 0.92;
 }
 
+/* Hidden until the letter rise in Footer.tsx plays them in. */
 .footer-wordmark-char {
   display: inline-block;
+  opacity: 0;
+  transform: translateY(105%);
   will-change: transform;
 }
 
@@ -3324,4 +3327,185 @@ textarea:focus-visible {
   .exp-rail-head {
     display: none;
   }
+}
+
+/* ---------- Lite mode (visitor switch in the navbar, see lib/lite-mode.ts) ---------- */
+
+/* Pill switch with its state written inside: "Heavy" (full animations, default) or "Light". */
+.lite-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 5rem;
+  height: 1.9rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  background: transparent;
+  transition: background-color 200ms ease;
+}
+
+.lite-toggle-text {
+  width: 100%;
+  padding: 0 0.6rem 0 1.75rem;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.lite-toggle-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translateY(-50%);
+  transition: transform 200ms ease;
+}
+
+/* On: lime pill, knob slides right and the text moves to the left side. */
+.lite-toggle[aria-checked="true"] {
+  background: var(--lime);
+}
+
+.lite-toggle[aria-checked="true"] .lite-toggle-text {
+  padding: 0 1.75rem 0 0.6rem;
+}
+
+.lite-toggle[aria-checked="true"] .lite-toggle-thumb {
+  transform: translate(3.05rem, -50%);
+}
+
+.lite-toggle:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 4px;
+}
+
+.site-nav[data-theme="dark"] .lite-toggle[aria-checked="false"] {
+  border-color: rgba(241, 238, 230, 0.5);
+  color: var(--paper);
+}
+
+.site-nav[data-theme="dark"] .lite-toggle[aria-checked="false"] .lite-toggle-thumb {
+  background: var(--paper);
+}
+
+/* Curtain for switching modes: hidden until the switch drops it (see lib/lite-mode.ts). */
+.mode-curtain,
+.mode-curtain-accent {
+  position: fixed;
+  inset: 0;
+  display: none;
+  clip-path: inset(0% 0% 100% 0%);
+}
+
+.mode-curtain {
+  z-index: 111;
+  align-items: center;
+  justify-content: center;
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.mode-curtain-accent {
+  z-index: 110;
+  background: var(--lime);
+}
+
+html[data-mode-switch] .mode-curtain {
+  display: flex;
+}
+
+html[data-mode-switch] .mode-curtain-accent {
+  display: block;
+}
+
+/* Arriving after a switch, the page opens fully covered (the new mode's class matches the
+   target), then the curtain lifts. While dropping, the old mode's class is still on, so no match. */
+html.lite-mode[data-mode-switch="light"] .mode-curtain,
+html.lite-mode[data-mode-switch="light"] .mode-curtain-accent,
+html:not(.lite-mode)[data-mode-switch="heavy"] .mode-curtain,
+html:not(.lite-mode)[data-mode-switch="heavy"] .mode-curtain-accent {
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+/* The mode curtain replaces the splash on the load right after a switch. */
+html[data-mode-switch] .loading-screen,
+html[data-mode-switch] .loading-curtain-accent {
+  display: none !important;
+}
+
+.mode-curtain {
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.mode-curtain-label {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.mode-curtain-note {
+  max-width: 26rem;
+  color: rgba(241, 238, 230, 0.66);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+html[data-mode-switch="light"] .mode-curtain-label::after {
+  content: "Light mode";
+}
+
+html[data-mode-switch="light"] .mode-curtain-note::after {
+  content: "Heavy animations off";
+}
+
+html[data-mode-switch="heavy"] .mode-curtain-label::after {
+  content: "Heavy mode";
+}
+
+html[data-mode-switch="heavy"] .mode-curtain-note::after {
+  content: "All animations on";
+}
+
+/* Everything below only applies once lite mode is on. */
+html.lite-mode .cursor-ball,
+html.lite-mode .site-glow,
+html.lite-mode .hero-aura,
+html.lite-mode .lux-aura,
+html.lite-mode .hero-card-glow,
+html.lite-mode .skill-card-orb {
+  display: none !important;
+}
+
+/* Transitions are removed outright rather than shortened: a near-zero transition still counts as
+   running, so code that sets a size and measures it straight away (like the footer name) would
+   read the old value. */
+html.lite-mode *,
+html.lite-mode *::before,
+html.lite-mode *::after {
+  scroll-behavior: auto !important;
+  transition: none !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  will-change: auto !important;
+}
+
+/* Blurring what's behind an element is costly on weak GPUs; only the navbar keeps it. */
+html.lite-mode *:not(.site-nav-bar) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }

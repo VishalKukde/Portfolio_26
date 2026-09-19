@@ -7,13 +7,18 @@ import { NAV_LINKS } from "@/constants";
 import { scrollToSection } from "@/lib/scroll";
 import { sectionAt, themeOf, type SectionTheme } from "@/lib/sections";
 import { lockScroll, unlockScroll } from "@/lib/lenis";
+import { isLiteMode, setLiteMode } from "@/lib/lite-mode";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<SectionTheme>("light");
   const [activeHref, setActiveHref] = useState<string | null>(null);
+  // Read after mount: the server always renders lite mode as off.
+  const [lite, setLite] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => setLite(isLiteMode()), []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,28 +113,51 @@ export default function Navbar() {
           })}
         </nav>
 
-        <a
-          href="#contact"
-          onClick={(event) => scrollToSection(event, "#contact")}
-          className="button-primary nav-cta hidden sm:inline-flex"
-          data-magnetic="0.25"
-        >
-          Let&apos;s talk <ArrowUpRight size={14} strokeWidth={1.8} />
-        </a>
+        <div className="flex items-center gap-2">
+          {/* Lite mode switch: off by default; toggling it reloads the page fresh in the new mode. */}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={lite}
+            aria-label="Light mode: turn off heavy animations"
+            title={lite ? "Light mode is on. Click for the full animated site" : "Switch to light mode: turn off heavy animations"}
+            onClick={() => {
+              // Ignore clicks while the mode curtain is already running.
+              if (document.documentElement.dataset.modeSwitch) return;
+              setLite(!lite);
+              void setLiteMode(!lite);
+            }}
+            className="lite-toggle"
+          >
+            <span className="lite-toggle-text" aria-hidden="true">
+              {lite ? "Light" : "Heavy"}
+            </span>
+            <span className="lite-toggle-thumb" aria-hidden="true" />
+          </button>
 
-        <button
-          type="button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((current) => !current)}
-          className="menu-button md:hidden"
-        >
-          {menuOpen ? (
-            <X size={19} strokeWidth={1.8} />
-          ) : (
-            <Menu size={19} strokeWidth={1.8} />
-          )}
-        </button>
+          <a
+            href="#contact"
+            onClick={(event) => scrollToSection(event, "#contact")}
+            className="button-primary nav-cta hidden sm:inline-flex"
+            data-magnetic="0.25"
+          >
+            Let&apos;s talk <ArrowUpRight size={14} strokeWidth={1.8} />
+          </a>
+
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((current) => !current)}
+            className="menu-button md:hidden"
+          >
+            {menuOpen ? (
+              <X size={19} strokeWidth={1.8} />
+            ) : (
+              <Menu size={19} strokeWidth={1.8} />
+            )}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

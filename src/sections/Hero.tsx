@@ -10,6 +10,7 @@ import {
   useSpring,
 } from "framer-motion";
 import { ArrowUpRight, Code2, Download } from "lucide-react";
+import { isLiteMode } from "@/lib/lite-mode";
 import { openResumeModal } from "@/lib/resume";
 import { scrollToSection } from "@/lib/scroll";
 import { LOADING_DURATION } from "@/components/LoadingScreen";
@@ -114,7 +115,7 @@ export default function Hero() {
 
   // A gentle 3D tilt and a spotlight that follow the pointer across the card.
   const handleCardMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (reduceMotion || event.pointerType !== "mouse") return;
+    if (reduceMotion || isLiteMode() || event.pointerType !== "mouse") return;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
@@ -136,7 +137,7 @@ export default function Hero() {
   // never collide with the Framer entrance animations inside them.
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return undefined;
+    if (!section || isLiteMode()) return undefined;
 
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia(section);

@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { isLiteMode } from "@/lib/lite-mode";
 
 // Every heading marked data-split reveals word by word, each word rising out of its own mask
 // the first time the heading scrolls into view. Nested accents (like .lux-accent) stay intact.
 export default function SplitHeadings() {
   useEffect(() => {
+    if (isLiteMode()) return undefined;
     gsap.registerPlugin(ScrollTrigger, SplitText);
     const media = gsap.matchMedia();
 

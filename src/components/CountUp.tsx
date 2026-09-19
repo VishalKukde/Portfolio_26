@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { onSplashDone } from "@/lib/splash";
+import { prefersReducedMotion } from "@/lib/lite-mode";
 
 interface CountUpProps {
   value: number;
@@ -39,7 +40,7 @@ export default function CountUp({
     // The server-rendered text can be stale (e.g. a date-based value from build time), so
     // always write the current final value first.
     element.textContent = format(value);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (prefersReducedMotion()) return undefined;
 
     const counter = { current: 0 };
     element.textContent = format(0);

@@ -28,6 +28,7 @@ function SocialIcon({ label }: { label: string }) {
 }
 
 // Sizes the name so it spans the full footer width edge to edge, then lets each letter rise in.
+// Both of its effects stay on in lite mode, so they avoid Framer (which lite mode switches off).
 function FooterWordmark({ text }: { text: string }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
@@ -49,6 +50,44 @@ function FooterWordmark({ text }: { text: string }) {
     const observer = new ResizeObserver(fit);
     observer.observe(wrap);
     return () => observer.disconnect();
+  }, []);
+
+  // Letter rise: once 40% of the name is in view, each letter rises out of the footer edge in turn.
+  useEffect(() => {
+    const word = textRef.current;
+    if (!word) return undefined;
+
+    const chars = Array.from(word.querySelectorAll<HTMLElement>(".footer-wordmark-char"));
+    const animations: Animation[] = [];
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        observer.disconnect();
+        chars.forEach((char, index) => {
+          animations.push(
+            char.animate(
+              [
+                { transform: "translateY(105%)", opacity: 0 },
+                { transform: "translateY(0%)", opacity: 1 },
+              ],
+              {
+                duration: 1100,
+                delay: index * 50,
+                easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+                fill: "both",
+              },
+            ),
+          );
+        });
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(word);
+
+    return () => {
+      observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+    };
   }, []);
 
   // Scroll-linked stretch: over the last stretch of the page the name grows taller from its
@@ -102,28 +141,13 @@ function FooterWordmark({ text }: { text: string }) {
 
   return (
     <div ref={wrapRef} className="footer-wordmark" aria-hidden="true">
-      <motion.span
-        ref={textRef}
-        className="footer-wordmark-text"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ staggerChildren: 0.05 }}
-      >
+      <span ref={textRef} className="footer-wordmark-text">
         {Array.from(text).map((char, index) => (
-          <motion.span
-            key={index}
-            className="footer-wordmark-char"
-            variants={{
-              hidden: { y: "105%", opacity: 0 },
-              show: { y: "0%", opacity: 1 },
-            }}
-            transition={{ duration: 1.1, ease: luxEase }}
-          >
+          <span key={index} className="footer-wordmark-char">
             {char === " " ? " " : char}
-          </motion.span>
+          </span>
         ))}
-      </motion.span>
+      </span>
     </div>
   );
 }

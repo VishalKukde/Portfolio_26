@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/lib/lite-mode";
 
 const HIDDEN_CLIP = "inset(100% 0% 0% 0%)";
 const SHOWN_CLIP = "inset(0% 0% 0% 0%)";
@@ -17,9 +18,7 @@ export default function ProjectStack({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = prefersReducedMotion();
     const stack = stackRef.current;
 
     if (reduceMotion || !stack) {

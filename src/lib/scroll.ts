@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
 import { getLenis } from '@/lib/lenis';
+import { prefersReducedMotion } from '@/lib/lite-mode';
 
 const easeInOutQuart = (t: number) => (t < 0.5 ? 8 * t ** 4 : 1 - (-2 * t + 2) ** 4 / 2);
 
@@ -33,7 +34,7 @@ export function scrollToSection(event: MouseEvent<HTMLAnchorElement>, href: stri
   } else {
     window.scrollTo({
       top,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     });
   }
   window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);

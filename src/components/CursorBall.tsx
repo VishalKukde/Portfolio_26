@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { sectionAt, themeOf } from "@/lib/sections";
+import { isLiteMode, prefersReducedMotion } from "@/lib/lite-mode";
 
 const INTERACTIVE = "a, button, input, textarea, select, label, [role='button']";
 
@@ -11,11 +12,11 @@ export default function CursorBall() {
 
   useEffect(() => {
     const ball = ballRef.current;
-    if (!ball || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    if (!ball || isLiteMode() || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
       return undefined;
     }
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = prefersReducedMotion();
     const target = { x: -100, y: -100 };
     const current = { x: -100, y: -100 };
     let frame = 0;

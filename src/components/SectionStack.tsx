@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isLiteMode } from "@/lib/lite-mode";
 
 const STACKING_QUERY =
   "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
@@ -12,7 +13,7 @@ export default function SectionStack({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const main = mainRef.current;
-    if (!main) return undefined;
+    if (!main || isLiteMode()) return undefined;
 
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
