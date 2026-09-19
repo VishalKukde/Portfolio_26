@@ -1,4 +1,4 @@
-<h1 align="center">Vishal Kukde</h1>
+<h1 align="center">Vishal Kukde S</h1>
 
 <p align="center">
   <strong>Senior Full Stack Developer</strong><br />
@@ -27,11 +27,11 @@ My home base is React, Next.js, Node.js, and TypeScript. I've used them to build
 
 ### How I work
 
-| | Principle | |
-| :---: | --- | --- |
-| **01** | **Make it clear** | Good software explains itself. I turn dense requirements into interfaces and APIs people can reason about. |
-| **02** | **Make it fast** | Performance is part of the product. I care about the first paint, the last query, and every moment between. |
-| **03** | **Make it last** | A clean foundation gives a team room to move. I build modular systems that can grow without losing their shape. |
+|        | Principle         |                                                                                                                 |
+| :----: | ----------------- | --------------------------------------------------------------------------------------------------------------- |
+| **01** | **Make it clear** | Good software explains itself. I turn dense requirements into interfaces and APIs people can reason about.      |
+| **02** | **Make it fast**  | Performance is part of the product. I care about the first paint, the last query, and every moment between.     |
+| **03** | **Make it last**  | A clean foundation gives a team room to move. I build modular systems that can grow without losing their shape. |
 
 ### What I bring
 
@@ -64,13 +64,13 @@ Led frontend architecture for SaaS products where performance, accessibility, an
 
 ## Selected work
 
-| # | Project | Category | Built with | Highlights |
-| :---: | --- | --- | --- | --- |
-| 01 | [**Epic Show 2.0**](https://epicshow.vercel.app/) | Ticket booking | Next.js, React, Node.js, MongoDB, Tailwind CSS, Framer Motion | Real-time seat booking, multi-category events, responsive design |
-| 02 | [**Get Epic Show**](https://getepicshow.vercel.app/) | Ticket booking | React, Node.js, Express, MongoDB, Material UI | Showtime browsing, seat selection, seamless UX |
-| 03 | [**Dining and Delivery**](https://dininganddelivery.vercel.app/) | Food delivery | React, Node.js, Express, MongoDB | Order tracking, table reservations, multi-device support |
-| 04 | [**Dining and Delivery Dashboard**](https://dashboarddesktop.vercel.app/) | Admin dashboard | React, Redux, Node.js, Express, MongoDB, Chart.js | Sales analytics, order management, real-time monitoring |
-| 05 | [**Silk Street Shop**](https://silkstreetshop.vercel.app/) | E-commerce | React, Node.js, MongoDB, Tailwind CSS | Product catalog, cart and checkout, responsive design |
+|  #  | Project                                                                   | Category        | Built with                                                    | Highlights                                                       |
+| :-: | ------------------------------------------------------------------------- | --------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 01  | [**Epic Show 2.0**](https://epicshow.vercel.app/)                         | Ticket booking  | Next.js, React, Node.js, MongoDB, Tailwind CSS, Framer Motion | Real-time seat booking, multi-category events, responsive design |
+| 02  | [**Get Epic Show**](https://getepicshow.vercel.app/)                      | Ticket booking  | React, Node.js, Express, MongoDB, Material UI                 | Showtime browsing, seat selection, seamless UX                   |
+| 03  | [**Dining and Delivery**](https://dininganddelivery.vercel.app/)          | Food delivery   | React, Node.js, Express, MongoDB                              | Order tracking, table reservations, multi-device support         |
+| 04  | [**Dining and Delivery Dashboard**](https://dashboarddesktop.vercel.app/) | Admin dashboard | React, Redux, Node.js, Express, MongoDB, Chart.js             | Sales analytics, order management, real-time monitoring          |
+| 05  | [**Silk Street Shop**](https://silkstreetshop.vercel.app/)                | E-commerce      | React, Node.js, MongoDB, Tailwind CSS                         | Product catalog, cart and checkout, responsive design            |
 
 > The dashboard and Silk Street Shop are best viewed on desktop.
 
