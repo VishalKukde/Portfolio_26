@@ -16,10 +16,10 @@ export const EXPERIENCE: ExperienceEntry[] = [
     role: "Sr. Full Stack Developer",
     location: "On-Site",
     summary:
-      "Just joined Royal Chains Limited as a Senior Full Stack Developer. Right now I'm getting to know the product, the codebase and the team, and settling in to own features from the interface to the data layer.",
+      "Building internal products that keep the company's operations in one place: material, employee and other day-to-day records, tracked accurately enough for teams to run on.",
     highlights: [
-      "Onboarding onto the product, its architecture and the team's ways of working",
-      "Picking up full stack work across the frontend and backend",
+      "Analysing how material, employee and related records move through the company today, and shaping the internal tools around that",
+      "Owning full stack delivery across the frontend and backend",
     ],
     current: true,
   },

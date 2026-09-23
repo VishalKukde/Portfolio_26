@@ -46,10 +46,10 @@ My home base is React, Next.js, Node.js, and TypeScript. I've used them to build
 
 **Sep 2026 – present · On-site**
 
-Just joined Royal Chains Limited as a Senior Full Stack Developer. Right now I'm getting to know the product, the codebase and the team, and settling in to own features from the interface to the data layer.
+Building internal products that keep the company's operations in one place: material, employee and other day-to-day records, tracked accurately enough for teams to run on.
 
-- Onboarding onto the product, its architecture and the team's ways of working.
-- Picking up full stack work across the frontend and backend.
+- Analysing how material, employee and related records move through the company today, and shaping the internal tools around that.
+- Owning full stack delivery across the frontend and backend.
 
 ### Software Developer · PoketPOS Solutions Pvt. Ltd.
 
